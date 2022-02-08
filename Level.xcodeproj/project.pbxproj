@@ -16,6 +16,12 @@
 		5E7F74BE27A44095009B9BB6 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74BD27A44095009B9BB6 /* LevelTests.swift */; };
 		5E7F74C827A44095009B9BB6 /* LevelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C727A44095009B9BB6 /* LevelUITests.swift */; };
 		5E7F74CA27A44095009B9BB6 /* LevelUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */; };
+		5E9A47D427B291510071F53F /* AddCategoryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */; };
+		5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D527B292590071F53F /* EditCategoryView.swift */; };
+		5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D727B2968A0071F53F /* CategoriesView.swift */; };
+		5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D927B2BEB40071F53F /* AccountsView.swift */; };
+		5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DB27B2C1320071F53F /* EditAccountView.swift */; };
+		5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,12 @@
 		5E7F74C327A44095009B9BB6 /* LevelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LevelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7F74C727A44095009B9BB6 /* LevelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITests.swift; sourceTree = "<group>"; };
 		5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryButtonView.swift; sourceTree = "<group>"; };
+		5E9A47D527B292590071F53F /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
+		5E9A47D727B2968A0071F53F /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
+		5E9A47D927B2BEB40071F53F /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
+		5E9A47DB27B2C1320071F53F /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +116,12 @@
 				5E7F74B027A44095009B9BB6 /* Persistence.swift */,
 				5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */,
 				5E7F74AD27A44095009B9BB6 /* Preview Content */,
+				5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */,
+				5E9A47D527B292590071F53F /* EditCategoryView.swift */,
+				5E9A47D727B2968A0071F53F /* CategoriesView.swift */,
+				5E9A47D927B2BEB40071F53F /* AccountsView.swift */,
+				5E9A47DB27B2C1320071F53F /* EditAccountView.swift */,
+				5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */,
 			);
 			path = Level;
 			sourceTree = "<group>";
@@ -263,9 +281,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */,
 				5E7F74B127A44095009B9BB6 /* Persistence.swift in Sources */,
+				5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */,
+				5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */,
+				5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */,
 				5E7F74AA27A44092009B9BB6 /* ContentView.swift in Sources */,
 				5E7F74B427A44095009B9BB6 /* Level.xcdatamodeld in Sources */,
+				5E9A47D427B291510071F53F /* AddCategoryButtonView.swift in Sources */,
+				5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */,
 				5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
