@@ -1,5 +1,5 @@
 //
-//  AddCategoryView.swift
+//  AddAccountView.swift
 //  Level
 //
 //  Created by Patryk Szczypkowski on 08/02/2022.
@@ -7,39 +7,40 @@
 
 import SwiftUI
 
-struct AddCategoryView: View {
+struct AddAccountView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     
     @State private var name = ""
-    @State private var budget: Decimal = 0.00
+    @State private var balance: Decimal = 0.00
     
     var body: some View {
         NavigationView {
             List {
                 HStack {
-                    Text("Name")
+                    Text("Account name")
                     TextField("Required", text: $name)
                         .multilineTextAlignment(.trailing)
                 }
                 HStack {
-                    Text("Budget")
-                    TextField("Required", value: $budget, format: .number)
+                    Text("Current balance")
+                    TextField("Required", value: $balance, format: .number)
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
                 }
                 Spacer()
-                Button("Add category") {
-                    let newCategory = Category(context: viewContext)
-                    newCategory.name = name
-                    newCategory.budget = NSDecimalNumber(decimal: budget)
+                Button("Add account") {
+                    let newAccount = Account(context: viewContext)
+                    newAccount.name = name
+                    newAccount.balance = NSDecimalNumber(decimal: balance)
                     
                     try? viewContext.save()
                     dismiss()
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
             .listStyle(PlainListStyle())
-            .navigationBarTitle("Add category")
+            .navigationBarTitle("Add account")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -51,8 +52,8 @@ struct AddCategoryView: View {
     }
 }
 
-struct AddCategoryView_Previews: PreviewProvider {
+struct AddAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AddCategoryView()
+        AddAccountView()
     }
 }

@@ -12,25 +12,24 @@ struct EditAccountView: View {
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject private var account: Account
-    @State private var name = ""
-    @State private var balance: Decimal = 0.00
+    @State private var name: String
+    @State private var balance: Decimal
     
     init(account: Account) {
         self.account = account
-        self.name = account.name ?? "test"
-        self.balance = account.balance?.decimalValue ?? 1000
+        _name = State(initialValue: account.name ?? "test")
+        _balance = State(initialValue: account.balance?.decimalValue ?? 0)
     }
     
     var body: some View {
-        NavigationView {
             List {
                 HStack {
-                    Text("Name")
+                    Text("Account name")
                     TextField("Required", text: $name)
                         .multilineTextAlignment(.trailing)
                 }
                 HStack {
-                    Text("Balance")
+                    Text("Current balance")
                     TextField("Required", value: $balance, format: .number)
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
@@ -43,10 +42,10 @@ struct EditAccountView: View {
                     try? viewContext.save()
                     dismiss()
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
-        }
-        .listStyle(PlainListStyle())
-        .navigationBarTitle("Edit account")
+            .listStyle(PlainListStyle())
+            .navigationBarTitle("Edit account")
     }
 }
 

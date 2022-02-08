@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E41345C27B2E29A006CE29E /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345B27B2E29A006CE29E /* ReportsView.swift */; };
+		5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345D27B2E2E5006CE29E /* SettingsView.swift */; };
 		5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A727A44092009B9BB6 /* LevelApp.swift */; };
 		5E7F74AA27A44092009B9BB6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A927A44092009B9BB6 /* ContentView.swift */; };
 		5E7F74AC27A44095009B9BB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E7F74AB27A44095009B9BB6 /* Assets.xcassets */; };
@@ -16,7 +18,7 @@
 		5E7F74BE27A44095009B9BB6 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74BD27A44095009B9BB6 /* LevelTests.swift */; };
 		5E7F74C827A44095009B9BB6 /* LevelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C727A44095009B9BB6 /* LevelUITests.swift */; };
 		5E7F74CA27A44095009B9BB6 /* LevelUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */; };
-		5E9A47D427B291510071F53F /* AddCategoryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */; };
+		5E9A47D427B291510071F53F /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D327B291500071F53F /* AddCategoryView.swift */; };
 		5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D527B292590071F53F /* EditCategoryView.swift */; };
 		5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D727B2968A0071F53F /* CategoriesView.swift */; };
 		5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D927B2BEB40071F53F /* AccountsView.swift */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E41345B27B2E29A006CE29E /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
+		5E41345D27B2E2E5006CE29E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E7F74A427A44092009B9BB6 /* Level.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Level.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7F74A727A44092009B9BB6 /* LevelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelApp.swift; sourceTree = "<group>"; };
 		5E7F74A927A44092009B9BB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,7 +58,7 @@
 		5E7F74C327A44095009B9BB6 /* LevelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LevelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7F74C727A44095009B9BB6 /* LevelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITests.swift; sourceTree = "<group>"; };
 		5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryButtonView.swift; sourceTree = "<group>"; };
+		5E9A47D327B291500071F53F /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
 		5E9A47D527B292590071F53F /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
 		5E9A47D727B2968A0071F53F /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		5E9A47D927B2BEB40071F53F /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
@@ -87,6 +91,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E41345727B2D78D006CE29E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5E41345A27B2DFC2006CE29E /* Tabs */,
+				5E41345827B2D9BE006CE29E /* Add */,
+				5E41345927B2D9C6006CE29E /* Edit */,
+				5E7F74A927A44092009B9BB6 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5E41345827B2D9BE006CE29E /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				5E9A47D327B291500071F53F /* AddCategoryView.swift */,
+				5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
+		5E41345927B2D9C6006CE29E /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				5E9A47D527B292590071F53F /* EditCategoryView.swift */,
+				5E9A47DB27B2C1320071F53F /* EditAccountView.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		5E41345A27B2DFC2006CE29E /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				5E9A47D727B2968A0071F53F /* CategoriesView.swift */,
+				5E9A47D927B2BEB40071F53F /* AccountsView.swift */,
+				5E41345B27B2E29A006CE29E /* ReportsView.swift */,
+				5E41345D27B2E2E5006CE29E /* SettingsView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
 		5E7F749B27A44091009B9BB6 = {
 			isa = PBXGroup;
 			children = (
@@ -110,18 +154,12 @@
 		5E7F74A627A44092009B9BB6 /* Level */ = {
 			isa = PBXGroup;
 			children = (
+				5E41345727B2D78D006CE29E /* Views */,
 				5E7F74A727A44092009B9BB6 /* LevelApp.swift */,
-				5E7F74A927A44092009B9BB6 /* ContentView.swift */,
 				5E7F74AB27A44095009B9BB6 /* Assets.xcassets */,
 				5E7F74B027A44095009B9BB6 /* Persistence.swift */,
 				5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */,
 				5E7F74AD27A44095009B9BB6 /* Preview Content */,
-				5E9A47D327B291500071F53F /* AddCategoryButtonView.swift */,
-				5E9A47D527B292590071F53F /* EditCategoryView.swift */,
-				5E9A47D727B2968A0071F53F /* CategoriesView.swift */,
-				5E9A47D927B2BEB40071F53F /* AccountsView.swift */,
-				5E9A47DB27B2C1320071F53F /* EditAccountView.swift */,
-				5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */,
 			);
 			path = Level;
 			sourceTree = "<group>";
@@ -288,9 +326,11 @@
 				5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */,
 				5E7F74AA27A44092009B9BB6 /* ContentView.swift in Sources */,
 				5E7F74B427A44095009B9BB6 /* Level.xcdatamodeld in Sources */,
-				5E9A47D427B291510071F53F /* AddCategoryButtonView.swift in Sources */,
+				5E9A47D427B291510071F53F /* AddCategoryView.swift in Sources */,
 				5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */,
+				5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */,
 				5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */,
+				5E41345C27B2E29A006CE29E /* ReportsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

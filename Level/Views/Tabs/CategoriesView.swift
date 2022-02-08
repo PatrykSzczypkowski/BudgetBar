@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
-import Foundation
 
 struct CategoriesView: View {
     @Environment(\.managedObjectContext) private var viewContext
