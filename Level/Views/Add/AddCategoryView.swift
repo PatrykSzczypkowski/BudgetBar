@@ -24,9 +24,14 @@ struct AddCategoryView: View {
                 }
                 HStack {
                     Text("Budget")
-                    TextField("Required", value: $budget, format: .number)
+                    TextField("Required", value: $budget, format: .currency(code: "EUR"))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
+                        .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                            if let textField = obj.object as? UITextField {
+                                textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                            }
+                        }
                 }
                 Spacer()
                 Button("Add category") {
@@ -38,6 +43,7 @@ struct AddCategoryView: View {
                     dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
+                .foregroundColor(Color.accentColor)
             }
             
             .listStyle(PlainListStyle())

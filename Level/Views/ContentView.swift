@@ -14,33 +14,9 @@ struct ContentView: View {
         TabView {
             CategoriesView()
             AccountsView()
-            
-            NavigationView {
-                List {
-                    
-                }
-            }
-            .tabItem {
-                Label("Add transaction", systemImage: "plus")
-            }
-            
-            NavigationView {
-                List {
-                    
-                }
-            }
-            .tabItem {
-                Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
-            }
-            
-            NavigationView {
-                List {
-                    
-                }
-            }
-            .tabItem {
-                Label("Settings", systemImage: "gear")
-            }
+            AddTransactionView()
+            ReportsView()
+            SettingsView()
         }
     }
 }
@@ -64,3 +40,16 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+
+struct AddTransactionView: View {
+    var body: some View {
+        NavigationView {
+            List {
+                
+            }
+        }
+        .tabItem {
+            Label("Add transaction", systemImage: "plus")
+        }
+    }
+}

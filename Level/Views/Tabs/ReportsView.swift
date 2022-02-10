@@ -13,6 +13,9 @@ struct ReportsView: View {
             List {}
             .navigationTitle("Reports")
         }
+        .tabItem {
+            Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
+        }
     }
 }
 

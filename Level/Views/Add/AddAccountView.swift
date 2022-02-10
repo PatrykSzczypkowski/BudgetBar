@@ -24,9 +24,14 @@ struct AddAccountView: View {
                 }
                 HStack {
                     Text("Current balance")
-                    TextField("Required", value: $balance, format: .number)
+                    TextField("Required", value: $balance, format: .currency(code: "EUR"))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
+                        .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                            if let textField = obj.object as? UITextField {
+                                textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                            }
+                        }
                 }
                 Spacer()
                 Button("Add account") {
@@ -38,6 +43,7 @@ struct AddAccountView: View {
                     dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
+                .foregroundColor(Color.accentColor)
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("Add account")

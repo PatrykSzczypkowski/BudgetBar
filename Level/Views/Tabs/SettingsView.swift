@@ -13,6 +13,9 @@ struct SettingsView: View {
             List {}
             .navigationTitle("Settings")
         }
+        .tabItem {
+            Label("Settings", systemImage: "gear")
+        }
     }
 }
 

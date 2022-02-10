@@ -3,32 +3,32 @@
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
         <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="toTransaction" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Transaction" inverseName="toAccount" inverseEntity="Transaction"/>
+        <relationship name="transaction" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Transaction" inverseName="account" inverseEntity="Transaction"/>
     </entity>
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
         <attribute name="budget" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="toMonth" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Month" inverseName="toCategory" inverseEntity="Month"/>
-        <relationship name="toTransaction" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Transaction" inverseName="toCategory" inverseEntity="Transaction"/>
+        <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="month" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Month" inverseName="category" inverseEntity="Month"/>
+        <relationship name="transaction" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Transaction" inverseName="category" inverseEntity="Transaction"/>
     </entity>
     <entity name="Month" representedClassName="Month" syncable="YES" codeGenerationType="class">
-        <attribute name="category" optional="YES" attributeType="Transformable"/>
-        <relationship name="toCategory" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="toMonth" inverseEntity="Category"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="category" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Category" inverseName="month" inverseEntity="Category"/>
     </entity>
     <entity name="Transaction" representedClassName="Transaction" syncable="YES" codeGenerationType="class">
-        <attribute name="account" optional="YES" attributeType="Transformable"/>
         <attribute name="amount" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="category" optional="YES" attributeType="Transformable"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="inflow" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="payee" optional="YES" attributeType="String"/>
-        <relationship name="toAccount" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="toTransaction" inverseEntity="Account"/>
-        <relationship name="toCategory" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="toTransaction" inverseEntity="Category"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="transaction" inverseEntity="Account"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="transaction" inverseEntity="Category"/>
     </entity>
     <elements>
         <element name="Account" positionX="15.04681396484375" positionY="-12.9088134765625" width="128" height="88"/>
-        <element name="Transaction" positionX="-259.9493408203125" positionY="-40.09124755859375" width="128" height="163"/>
-        <element name="Category" positionX="-456.7229614257812" positionY="-7.69573974609375" width="128" height="103"/>
-        <element name="Month" positionX="-453.495849609375" positionY="-134.3269958496094" width="128" height="73"/>
+        <element name="Category" positionX="-456.7229614257812" positionY="-7.69573974609375" width="128" height="118"/>
+        <element name="Month" positionX="-453.495849609375" positionY="-134.3269958496094" width="128" height="88"/>
+        <element name="Transaction" positionX="-259.9493408203125" positionY="-40.09124755859375" width="128" height="133"/>
     </elements>
 </model>
