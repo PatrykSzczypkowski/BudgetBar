@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */; };
 		5E41345C27B2E29A006CE29E /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345B27B2E29A006CE29E /* ReportsView.swift */; };
 		5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345D27B2E2E5006CE29E /* SettingsView.swift */; };
+		5E5DAD4D27C7E1230014D3ED /* TransactionsPerAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */; };
+		5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */; };
 		5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A727A44092009B9BB6 /* LevelApp.swift */; };
 		5E7F74AA27A44092009B9BB6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A927A44092009B9BB6 /* ContentView.swift */; };
 		5E7F74AC27A44095009B9BB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E7F74AB27A44095009B9BB6 /* Assets.xcassets */; };
@@ -44,8 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		5E41345B27B2E29A006CE29E /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		5E41345D27B2E2E5006CE29E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsPerAccountView.swift; sourceTree = "<group>"; };
+		5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
 		5E7F74A427A44092009B9BB6 /* Level.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Level.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7F74A727A44092009B9BB6 /* LevelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelApp.swift; sourceTree = "<group>"; };
 		5E7F74A927A44092009B9BB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +104,7 @@
 				5E41345827B2D9BE006CE29E /* Add */,
 				5E41345927B2D9C6006CE29E /* Edit */,
 				5E7F74A927A44092009B9BB6 /* ContentView.swift */,
+				5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -107,6 +114,7 @@
 			children = (
 				5E9A47D327B291500071F53F /* AddCategoryView.swift */,
 				5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */,
+				5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -116,6 +124,7 @@
 			children = (
 				5E9A47D527B292590071F53F /* EditCategoryView.swift */,
 				5E9A47DB27B2C1320071F53F /* EditAccountView.swift */,
+				5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -320,12 +329,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */,
+				5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */,
 				5E7F74B127A44095009B9BB6 /* Persistence.swift in Sources */,
 				5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */,
 				5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */,
+				5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */,
 				5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */,
 				5E7F74AA27A44092009B9BB6 /* ContentView.swift in Sources */,
 				5E7F74B427A44095009B9BB6 /* Level.xcdatamodeld in Sources */,
+				5E5DAD4D27C7E1230014D3ED /* TransactionsPerAccountView.swift in Sources */,
 				5E9A47D427B291510071F53F /* AddCategoryView.swift in Sources */,
 				5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */,
 				5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */,

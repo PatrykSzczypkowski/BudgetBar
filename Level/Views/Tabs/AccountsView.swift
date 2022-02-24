@@ -31,7 +31,7 @@ struct AccountsView: View {
                 ForEach(accounts) { account in
                     NavigationLink (
                         destination: {
-                            EditAccountView(account: account)
+                            TransactionsPerAccountView(account: account)
                         },
                         label: {
                             HStack {

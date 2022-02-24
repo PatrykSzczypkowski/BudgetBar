@@ -11,6 +11,7 @@ struct AddCategoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     
+    @Binding var month: Month
     @State private var name = ""
     @State private var budget: Decimal = 0.00
     
@@ -38,6 +39,9 @@ struct AddCategoryView: View {
                     let newCategory = Category(context: viewContext)
                     newCategory.name = name
                     newCategory.budget = NSDecimalNumber(decimal: budget)
+                    newCategory.balance = NSDecimalNumber(decimal: budget)
+                    
+                    month.addToCategories(newCategory)
                     
                     try? viewContext.save()
                     dismiss()
@@ -45,7 +49,6 @@ struct AddCategoryView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .foregroundColor(Color.accentColor)
             }
-            
             .listStyle(PlainListStyle())
             .navigationBarTitle("Add category")
             .toolbar {
@@ -59,8 +62,8 @@ struct AddCategoryView: View {
     }
 }
 
-struct AddCategoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddCategoryView()
-    }
-}
+//struct AddCategoryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddCategoryView()
+//    }
+//}

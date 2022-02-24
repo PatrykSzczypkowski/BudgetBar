@@ -11,14 +11,19 @@ struct CategoriesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Category.userOrder, ascending: true)],
-        animation: .default)
+        sortDescriptors: [NSSortDescriptor(keyPath: \Month.year, ascending: true),
+                          NSSortDescriptor(keyPath: \Month.month, ascending: true)])
+    private var months: FetchedResults<Month>
+    
+    @FetchRequest<Category>(
+        entity: Category.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Category.userOrder, ascending: true)])
     private var categories: FetchedResults<Category>
     
-    @FetchRequest(sortDescriptors: []) private var months: FetchedResults<Month>
+    @Binding var currentMonth: Month
     
-//    @State private var months = ["Feb 2022", "Mar 2022", "Apr 2022", "May 2022", "Jun 2022", "Jul 2022", "Aug 2022", "Sep 2022", "Oct 2022", "Nov 2022", "Dec 2022", "Jan 2023", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024", "Feb 2024"]
     @State private var showAddCategorySheet = false
+    @State private var monthString = "Feb 2022"
     
     var body: some View {
         NavigationView {
@@ -43,9 +48,17 @@ struct CategoriesView: View {
             .navigationTitle("Categories")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Menu ("Feb 2022") {
+                    Menu (monthString) {
                         ForEach(months, id: \.self) { month in
-//                            Button(month) { }
+                            Button(
+                                action: {
+                                    currentMonth = month
+                                    setMonthForCategories()
+                                },
+                                label: {
+                                    Text(verbatim: "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)")
+                                }
+                            )
                         }
                     }
                 }
@@ -62,7 +75,7 @@ struct CategoriesView: View {
                         }
                     )
                         .sheet(isPresented: $showAddCategorySheet) {
-                            AddCategoryView()
+                            AddCategoryView(month: $currentMonth)
                         }
                 }
             }
@@ -70,7 +83,7 @@ struct CategoriesView: View {
         .tabItem {
             Label("Categories", systemImage: "house")
         }
-//        .onAppear(perform: createMonths)
+        .onAppear(perform: setMonthForCategories)
     }
     
     private func move(from source: IndexSet, to destination: Int) {
@@ -98,23 +111,14 @@ struct CategoriesView: View {
         }
     }
     
-    private func createMonths() {
-        let year = Calendar.current.component(.year, from: Date())
-        let month = Calendar.current.component(.month, from: Date())
-        
-        if(months.count == 0) {
-            for i in 0..<24 {
-                let newMonth = Month()
-                newMonth.year = Int16(year)
-                newMonth.month = Int16(month)
-//                newMonth.category = categories
-            }
-        }
+    private func setMonthForCategories() {
+        monthString = "\(DateFormatter().shortStandaloneMonthSymbols[Int(currentMonth.month) - 1]) \(currentMonth.year)"
+        categories.nsPredicate = NSPredicate(format: "month == %@", currentMonth)
     }
 }
 
-struct CategoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        CategoriesView()
-    }
-}
+//struct CategoryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CategoriesView().preferredColorScheme(.dark).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//    }
+//}
