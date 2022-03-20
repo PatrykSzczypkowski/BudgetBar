@@ -123,7 +123,7 @@ struct AddTransactionView: View {
                 .foregroundColor(Color.accentColor)
             }
             .listStyle(PlainListStyle())
-            .navigationBarTitle("Add category")
+            .navigationBarTitle("Add transaction")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

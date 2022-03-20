@@ -10,6 +10,8 @@
 		5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */; };
 		5E41345C27B2E29A006CE29E /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345B27B2E29A006CE29E /* ReportsView.swift */; };
 		5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345D27B2E2E5006CE29E /* SettingsView.swift */; };
+		5E4FA7B927DB660F00371354 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E4FA7B527DB65F900371354 /* Charts.framework */; platformFilter = ios; };
+		5E4FA7BA27DB660F00371354 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5E4FA7B527DB65F900371354 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5E5DAD4D27C7E1230014D3ED /* TransactionsPerAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */; };
 		5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */; };
 		5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A727A44092009B9BB6 /* LevelApp.swift */; };
@@ -30,6 +32,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5E4FA7B427DB65F900371354 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		5E4FA7B627DB65F900371354 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
 		5E7F74BA27A44095009B9BB6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E7F749C27A44091009B9BB6 /* Project object */;
@@ -46,10 +62,26 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5E4FA7BB27DB660F00371354 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5E4FA7BA27DB660F00371354 /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		5E41345B27B2E29A006CE29E /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		5E41345D27B2E2E5006CE29E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5E4FA7AE27DB65A800371354 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../../../../../../../Downloads/Charts-4.0.1/Charts.xcodeproj"; sourceTree = "<group>"; };
 		5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsPerAccountView.swift; sourceTree = "<group>"; };
 		5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
 		5E7F74A427A44092009B9BB6 /* Level.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Level.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E4FA7B927DB660F00371354 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +173,22 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		5E4FA7B027DB65F900371354 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E4FA7B527DB65F900371354 /* Charts.framework */,
+				5E4FA7B727DB65F900371354 /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E4FA7B827DB660F00371354 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5E7F749B27A44091009B9BB6 = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +196,7 @@
 				5E7F74BC27A44095009B9BB6 /* LevelTests */,
 				5E7F74C627A44095009B9BB6 /* LevelUITests */,
 				5E7F74A527A44092009B9BB6 /* Products */,
+				5E4FA7B827DB660F00371354 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +213,8 @@
 		5E7F74A627A44092009B9BB6 /* Level */ = {
 			isa = PBXGroup;
 			children = (
+				5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */,
+				5E4FA7AE27DB65A800371354 /* Info.plist */,
 				5E41345727B2D78D006CE29E /* Views */,
 				5E7F74A727A44092009B9BB6 /* LevelApp.swift */,
 				5E7F74AB27A44095009B9BB6 /* Assets.xcassets */,
@@ -208,6 +260,7 @@
 				5E7F74A027A44091009B9BB6 /* Sources */,
 				5E7F74A127A44091009B9BB6 /* Frameworks */,
 				5E7F74A227A44091009B9BB6 /* Resources */,
+				5E4FA7BB27DB660F00371354 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -288,6 +341,12 @@
 			mainGroup = 5E7F749B27A44091009B9BB6;
 			productRefGroup = 5E7F74A527A44092009B9BB6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5E4FA7B027DB65F900371354 /* Products */;
+					ProjectRef = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				5E7F74A327A44091009B9BB6 /* Level */,
@@ -296,6 +355,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5E4FA7B527DB65F900371354 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 5E4FA7B427DB65F900371354 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5E4FA7B727DB65F900371354 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = 5E4FA7B627DB65F900371354 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5E7F74A227A44091009B9BB6 /* Resources */ = {
@@ -506,7 +582,7 @@
 				DEVELOPMENT_TEAM = 43TC24Q7CE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Level/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -535,7 +611,7 @@
 				DEVELOPMENT_TEAM = 43TC24Q7CE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Level/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

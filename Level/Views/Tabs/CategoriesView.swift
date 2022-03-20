@@ -29,17 +29,28 @@ struct CategoriesView: View {
         NavigationView {
             List {
                 ForEach(categories) { category in
-                    NavigationLink (
-                        destination: {
-                            EditCategoryView(category: category)
-                        },
-                        label: {
-                            HStack {
-                                Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing).background(Color.green)
+                    ZStack {
+                        NavigationLink (destination: EditCategoryView(category: category)) {
+                            EmptyView()
+                        }
+                        HStack {
+                            Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).padding(.leading, 16)
+                            ZStack(alignment: .trailing) {
+                                Color.darkGreen.ignoresSafeArea()
+                                GeometryReader { geo in
+                                    Rectangle()
+                                        .fill(Color.accentColor)
+                                        .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
+                                }
+                                HStack {
+                                    Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
+                                    Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
+                                }
                             }
                         }
-                    )
+                    }
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .listRowSeparator(.hidden)
                 }
                 .onDelete(perform: deleteItems)
                 .onMove(perform: move)
@@ -86,6 +97,28 @@ struct CategoriesView: View {
         .onAppear(perform: setMonthForCategories)
     }
     
+    struct CategoryRowView: View {
+        @StateObject var category: Category
+        
+        var body: some View {
+            HStack {
+                Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).padding(.leading, 16)
+                ZStack(alignment: .trailing) {
+                    Color.darkGreen.ignoresSafeArea()
+                    GeometryReader { geo in
+                        Rectangle()
+                            .fill(Color.accentColor)
+                            .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
+                    }
+                    HStack {
+                        Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
+                        Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
+                    }
+                }
+            }
+        }
+    }
+
     private func move(from source: IndexSet, to destination: Int) {
         var revisedItems: [Category] = categories.map{ $0 }
         
@@ -117,8 +150,13 @@ struct CategoriesView: View {
     }
 }
 
+extension Color {
+    static let darkGreen = Color("DarkGreenAccent")
+}
+
 //struct CategoryView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        CategoriesView().preferredColorScheme(.dark).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 //    }
 //}
+

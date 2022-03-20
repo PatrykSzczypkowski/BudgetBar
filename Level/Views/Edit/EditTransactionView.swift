@@ -142,7 +142,7 @@ struct EditTransactionView: View {
             .foregroundColor(Color.accentColor)
         }
         .listStyle(PlainListStyle())
-        .navigationBarTitle("Add category")
+        .navigationBarTitle("Edit transaction")
         .onAppear(perform: setMonthForCategories)
         .onAppear(perform: setCategoryAndAccountStrings)
     }

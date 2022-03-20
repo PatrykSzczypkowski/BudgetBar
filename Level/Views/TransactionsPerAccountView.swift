@@ -27,18 +27,16 @@ struct TransactionsPerAccountView: View {
                         EditTransactionView(transaction: transaction)
                     },
                     label: {
-                        HStack {
-                            Text(transaction.payee!)
-                            Spacer()
-                            Text(transaction.amount!.decimalValue, format: .currency(code: "EUR")).frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing).foregroundColor(transaction.inflow ? Color.accentColor : Color.red)
-                        }
+                        TransactionLabelView(transaction: transaction)
                     }
                 )
             }
             .onDelete(perform: deleteItems)
         }
-        // TODO: add .onChange() function that will modify NSPredicate
-        .searchable(text: $searchString)
+        .searchable(text: $searchString, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search amount, payees or category")
+        .onChange(of: searchString) { newString in
+            transactions.nsPredicate = searchPredicate(query: newString)
+        }
         .navigationTitle(account.name!)
         .onAppear(perform: setAccountForTransactions)
         .toolbar {
@@ -57,10 +55,30 @@ struct TransactionsPerAccountView: View {
             }
         }
     }
+
+    struct TransactionLabelView: View {
+        var transaction: Transaction
+        
+        var body: some View {
+            HStack {
+                VStack(spacing: 0) {
+                    Text(transaction.payee!)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(DateFormatter.localizedString(from: transaction.date!, dateStyle: .short, timeStyle: .none))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .foregroundColor(.gray)
+                        .font(.system(size: 12))
+                }
+                Spacer()
+                Text(transaction.amount!.decimalValue, format: .currency(code: "EUR")).frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing).foregroundColor(transaction.inflow ? Color.accentColor : Color.red)
+            }
+        }
+    }
     
     private func deleteItems(offsets: IndexSet) {
         for index in offsets {
             transactions[index].account!.balance! = transactions[index].account!.balance!.adding( !transactions[index].inflow ? transactions[index].amount! : transactions[index].amount!.multiplying(by: -1))
+            transactions[index].category!.balance! = transactions[index].category!.balance!.adding( !transactions[index].inflow ? transactions[index].amount! : transactions[index].amount!.multiplying(by: -1))
         }
         withAnimation {
             offsets.map { transactions[$0] }.forEach(viewContext.delete)
@@ -76,13 +94,26 @@ struct TransactionsPerAccountView: View {
         }
     }
     
+    private func searchPredicate(query: String) -> NSPredicate? {
+        if query == "" { return NSPredicate(format: "account == %@", account) }
+        return NSPredicate(format: "account == %@ AND (amount == %@ OR payee BEGINSWITH[cd] %@ OR category.name BEGINSWITH[cd] %@)", account, NSDecimalNumber(string: query), query, query)
+    }
+    
     private func setAccountForTransactions() {
         transactions.nsPredicate = NSPredicate(format: "account == %@", account)
     }
 }
 
+
 //struct TransactionsPerAccountView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        TransactionsPerAccountView()
+//        let viewContext = PersistenceController.preview.container.viewContext
+//        let transaction = Transaction(context: viewContext)
+//        transaction.amount = 400
+//        transaction.inflow = false
+//        transaction.payee = "Aldi"
+//        transaction.date = Date()
+//
+//        return TransactionLabelView(transaction: transaction)
 //    }
 //}

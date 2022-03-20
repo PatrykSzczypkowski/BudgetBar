@@ -11,7 +11,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="month" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Month" inverseName="categories" inverseEntity="Month"/>
-        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Transaction" inverseName="category" inverseEntity="Transaction"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Transaction" inverseName="category" inverseEntity="Transaction"/>
     </entity>
     <entity name="Month" representedClassName="Month" syncable="YES" codeGenerationType="class">
         <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -19,18 +19,18 @@
         <relationship name="categories" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Category" inverseName="month" inverseEntity="Category"/>
     </entity>
     <entity name="Transaction" representedClassName="Transaction" syncable="YES" codeGenerationType="class">
-        <attribute name="amount" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="inflow" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="amount" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="inflow" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="payee" optional="YES" attributeType="String"/>
-        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="transactions" inverseEntity="Account"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="transactions" inverseEntity="Account"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="transactions" inverseEntity="Category"/>
     </entity>
     <elements>
-        <element name="Account" positionX="15.04681396484375" positionY="-12.9088134765625" width="128" height="88"/>
-        <element name="Category" positionX="-456.7229614257812" positionY="-7.69573974609375" width="128" height="119"/>
+        <element name="Account" positionX="-174.804443359375" positionY="43.24658203125" width="128" height="88"/>
+        <element name="Category" positionX="-424.4251708984375" positionY="93.70303344726562" width="128" height="133"/>
         <element name="Month" positionX="-453.495849609375" positionY="-134.3269958496094" width="128" height="88"/>
-        <element name="Transaction" positionX="-259.9493408203125" positionY="-40.09124755859375" width="128" height="148"/>
+        <element name="Transaction" positionX="115.0155029296875" positionY="79.72903442382812" width="128" height="148"/>
     </elements>
 </model>
