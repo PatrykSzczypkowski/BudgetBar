@@ -9,10 +9,7 @@ import Charts
 import SwiftUI
 
 struct ReportsView: View {
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Month.year, ascending: true),
-                          NSSortDescriptor(keyPath: \Month.month, ascending: true)])
-    private var months: FetchedResults<Month>
+    @EnvironmentObject var viewModel: LevelViewModel
     
     var body: some View {
         NavigationView {
@@ -29,7 +26,7 @@ struct ReportsView: View {
     func getSpendingsEntries() -> [ChartDataEntry] {
         var entries: [ChartDataEntry] = []
         var counter = 0.0
-        for month in months {
+        for month in viewModel.months {
             if (month.categories!.count != 0) {
                 counter += 1
                 var monthlySpendings: Decimal = 0.0

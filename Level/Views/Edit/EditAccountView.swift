@@ -10,6 +10,7 @@ import SwiftUI
 struct EditAccountView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: LevelViewModel
     
     @ObservedObject private var account: Account
     @State private var name: String
@@ -41,10 +42,7 @@ struct EditAccountView: View {
                 }
                 Spacer()
                 Button("Edit account") {
-                    account.name = name
-                    account.balance = NSDecimalNumber(decimal: balance)
-                    
-                    try? viewContext.save()
+                    viewModel.editAccount(account: account, name: name, balance: balance)
                     dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -55,13 +53,13 @@ struct EditAccountView: View {
     }
 }
 
-struct EditAccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        let viewContext = PersistenceController.preview.container.viewContext
-        let account = Account(context: viewContext)
-        account.name = "Test"
-        account.balance = 1000.00
-        
-        return EditAccountView(account: account)
-    }
-}
+//struct EditAccountView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let viewContext = PersistenceController.preview.container.viewContext
+//        let account = Account(context: viewContext)
+//        account.name = "Test"
+//        account.balance = 1000.00
+//
+//        return EditAccountView(account: account)
+//    }
+//}

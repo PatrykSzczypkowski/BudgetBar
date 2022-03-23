@@ -10,6 +10,7 @@ import SwiftUI
 struct EditCategoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: LevelViewModel
     
     @ObservedObject private var category: Category
     @State private var name: String
@@ -41,10 +42,7 @@ struct EditCategoryView: View {
             }
             Spacer()
             Button("Edit category") {
-                category.name = name
-                category.budget = NSDecimalNumber(decimal: budget)
-                
-                try? viewContext.save()
+                viewModel.editCategory(category: category, name: name, budget: budget)
                 dismiss()
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -55,13 +53,13 @@ struct EditCategoryView: View {
     }
 }
 
-struct EditCategoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        let viewContext = PersistenceController.preview.container.viewContext
-        let category = Category(context: viewContext)
-        category.name = "Test"
-        category.budget = 1000.00
-        
-        return EditCategoryView(category: category)
-    }
-}
+//struct EditCategoryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let viewContext = PersistenceController.preview.container.viewContext
+//        let category = Category(context: viewContext)
+//        category.name = "Test"
+//        category.budget = 1000.00
+//
+//        return EditCategoryView(category: category)
+//    }
+//}

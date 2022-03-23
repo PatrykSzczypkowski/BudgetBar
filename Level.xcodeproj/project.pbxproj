@@ -10,8 +10,6 @@
 		5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B79E727C7BA7E004B58B4 /* AddTransactionView.swift */; };
 		5E41345C27B2E29A006CE29E /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345B27B2E29A006CE29E /* ReportsView.swift */; };
 		5E41345E27B2E2E5006CE29E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41345D27B2E2E5006CE29E /* SettingsView.swift */; };
-		5E4FA7B927DB660F00371354 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E4FA7B527DB65F900371354 /* Charts.framework */; platformFilter = ios; };
-		5E4FA7BA27DB660F00371354 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5E4FA7B527DB65F900371354 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5E5DAD4D27C7E1230014D3ED /* TransactionsPerAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */; };
 		5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */; };
 		5E7F74A827A44092009B9BB6 /* LevelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74A727A44092009B9BB6 /* LevelApp.swift */; };
@@ -29,23 +27,11 @@
 		5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D927B2BEB40071F53F /* AccountsView.swift */; };
 		5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DB27B2C1320071F53F /* EditAccountView.swift */; };
 		5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */; };
+		5EE2B85B27E76EF100F72AD5 /* LevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */; };
+		5EE2B85E27E8B0D500F72AD5 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 5EE2B85D27E8B0D500F72AD5 /* Charts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5E4FA7B427DB65F900371354 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
-			remoteInfo = Charts;
-		};
-		5E4FA7B627DB65F900371354 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
-			remoteInfo = ChartsTests;
-		};
 		5E7F74BA27A44095009B9BB6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E7F749C27A44091009B9BB6 /* Project object */;
@@ -60,6 +46,20 @@
 			remoteGlobalIDString = 5E7F74A327A44091009B9BB6;
 			remoteInfo = Level;
 		};
+		5EE2B85627E76E0C00F72AD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		5EE2B85827E76E0C00F72AD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,7 +69,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5E4FA7BA27DB660F00371354 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,7 +80,7 @@
 		5E41345B27B2E29A006CE29E /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		5E41345D27B2E2E5006CE29E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E4FA7AE27DB65A800371354 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../../../../../../../Downloads/Charts-4.0.1/Charts.xcodeproj"; sourceTree = "<group>"; };
+		5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../Charts-4.0.2/Charts.xcodeproj"; sourceTree = "<group>"; };
 		5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsPerAccountView.swift; sourceTree = "<group>"; };
 		5E5DAD4E27C7F2F30014D3ED /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
 		5E7F74A427A44092009B9BB6 /* Level.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Level.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +101,7 @@
 		5E9A47D927B2BEB40071F53F /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		5E9A47DB27B2C1320071F53F /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
+		5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E4FA7B927DB660F00371354 /* Charts.framework in Frameworks */,
+				5EE2B85E27E8B0D500F72AD5 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,15 +173,6 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
-		5E4FA7B027DB65F900371354 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5E4FA7B527DB65F900371354 /* Charts.framework */,
-				5E4FA7B727DB65F900371354 /* ChartsTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5E4FA7B827DB660F00371354 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +212,7 @@
 				5E7F74B027A44095009B9BB6 /* Persistence.swift */,
 				5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */,
 				5E7F74AD27A44095009B9BB6 /* Preview Content */,
+				5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */,
 			);
 			path = Level;
 			sourceTree = "<group>";
@@ -250,6 +242,15 @@
 			path = LevelUITests;
 			sourceTree = "<group>";
 		};
+		5EE2B85227E76E0C00F72AD5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5EE2B85727E76E0C00F72AD5 /* Charts.framework */,
+				5EE2B85927E76E0C00F72AD5 /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -267,6 +268,9 @@
 			dependencies = (
 			);
 			name = Level;
+			packageProductDependencies = (
+				5EE2B85D27E8B0D500F72AD5 /* Charts */,
+			);
 			productName = Level;
 			productReference = 5E7F74A427A44092009B9BB6 /* Level.app */;
 			productType = "com.apple.product-type.application";
@@ -339,11 +343,14 @@
 				Base,
 			);
 			mainGroup = 5E7F749B27A44091009B9BB6;
+			packageReferences = (
+				5EE2B85C27E8B0D500F72AD5 /* XCRemoteSwiftPackageReference "Charts" */,
+			);
 			productRefGroup = 5E7F74A527A44092009B9BB6 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5E4FA7B027DB65F900371354 /* Products */;
+					ProductGroup = 5EE2B85227E76E0C00F72AD5 /* Products */;
 					ProjectRef = 5E4FA7AF27DB65F900371354 /* Charts.xcodeproj */;
 				},
 			);
@@ -357,18 +364,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		5E4FA7B527DB65F900371354 /* Charts.framework */ = {
+		5EE2B85727E76E0C00F72AD5 /* Charts.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Charts.framework;
-			remoteRef = 5E4FA7B427DB65F900371354 /* PBXContainerItemProxy */;
+			remoteRef = 5EE2B85627E76E0C00F72AD5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5E4FA7B727DB65F900371354 /* ChartsTests.xctest */ = {
+		5EE2B85927E76E0C00F72AD5 /* ChartsTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ChartsTests.xctest;
-			remoteRef = 5E4FA7B627DB65F900371354 /* PBXContainerItemProxy */;
+			remoteRef = 5EE2B85827E76E0C00F72AD5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -407,6 +414,7 @@
 				5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */,
 				5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */,
 				5E7F74B127A44095009B9BB6 /* Persistence.swift in Sources */,
+				5EE2B85B27E76EF100F72AD5 /* LevelViewModel.swift in Sources */,
 				5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */,
 				5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */,
 				5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */,
@@ -745,6 +753,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5EE2B85C27E8B0D500F72AD5 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5EE2B85D27E8B0D500F72AD5 /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5EE2B85C27E8B0D500F72AD5 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */ = {

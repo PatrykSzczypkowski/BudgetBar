@@ -10,19 +10,14 @@ import SwiftUI
 struct AddTransactionView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    
-    @FetchRequest<Category>(
-        entity: Category.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Category.userOrder, ascending: true)])
-    private var categories: FetchedResults<Category>
-    @FetchRequest<Account>(entity: Account.entity(), sortDescriptors: []) private var accounts: FetchedResults<Account>
+    @EnvironmentObject var viewModel: LevelViewModel
     
     @Binding var currentMonth: Month
     
     @State private var amount: Decimal = 0.00
     @State private var inflow: Bool = true
     @State private var payee: String = ""
-    @State private var category: Category = Category()
+    @State private var category: Category? = nil
     @State private var account: Account = Account()
     @State private var date: Date = Date()
     @State private var notes: String = ""
@@ -34,12 +29,29 @@ struct AddTransactionView: View {
         NavigationView {
             List {
                 HStack {
-                    Text("Amount")
-                    Toggle(" ", isOn: $inflow)
-                        .toggleStyle(.button)
-                        .tint(Color.accentColor)
-                        .background(.red)
-                        .cornerRadius(5)
+                    ZStack(alignment: .leading) {
+                        ZStack(alignment: .trailing) {
+                            if inflow {
+                                Color.darkGreen.ignoresSafeArea()
+                            }
+                            else {
+                                Color.darkRed.ignoresSafeArea()
+                            }
+                            Button(action: { inflow.toggle() }) {
+                                ZStack {
+                                    Rectangle()
+                                    .fill(inflow ? Color.accentColor : Color.red)
+                                    .frame(width: 40, height: 44)
+                                    Text(inflow ? "+" : "-")
+                                        .bold()
+                                        .font(.system(size: 16))
+                                }
+                                    
+                            }
+                        }
+                        Text("Amount")
+                            .padding(.leading, 16)
+                    }
                     TextField("Required", value: $amount, format: .currency(code: "EUR"))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
@@ -48,7 +60,9 @@ struct AddTransactionView: View {
                                 textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                             }
                         }
+                        .padding(.trailing, 16)
                 }
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 HStack {
                     Text("Payee")
                     TextField("Required", text: $payee)
@@ -58,7 +72,11 @@ struct AddTransactionView: View {
                     Text("Categories")
                     Spacer()
                     Menu(categoryString) {
-                        ForEach(categories) { category in
+                        Button("Transfer for account") {
+                            self.category = nil
+                            self.categoryString = "Transfer for account"
+                        }
+                        ForEach(viewModel.categories) { category in
                             Button(
                                 action: {
                                     self.category = category
@@ -75,7 +93,7 @@ struct AddTransactionView: View {
                     Text("Accounts")
                     Spacer()
                     Menu(accountString) {
-                        ForEach(accounts) { account in
+                        ForEach(viewModel.accounts) { account in
                             Button(
                                 action: {
                                     self.account = account
@@ -90,6 +108,11 @@ struct AddTransactionView: View {
                 }
                 HStack {
                     DatePicker("Date", selection: $date, displayedComponents: [.date])
+                        .onChange(of: date) { newDate in
+                            currentMonth = viewModel.getMonthForDate(date: newDate)
+                            categoryString = "Category"
+                            category = nil
+                        }
                 }
                 VStack {
                     HStack {
@@ -101,22 +124,7 @@ struct AddTransactionView: View {
                 }
                 Spacer()
                 Button("Add transaction") {
-                    let newTransaction = Transaction(context: viewContext)
-                    newTransaction.amount = NSDecimalNumber(decimal: amount)
-                    newTransaction.inflow = inflow
-                    newTransaction.payee = payee
-                    newTransaction.category = category
-                    newTransaction.account = account
-                    newTransaction.date = date
-                    newTransaction.notes = notes
-                    
-                    category.addToTransactions(newTransaction)
-                    category.balance = category.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
-                    account.addToTransactions(newTransaction)
-                    account.balance = account.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
-                    
-                    
-                    try? viewContext.save()
+                    viewModel.addTransaction(amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
                     dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -132,14 +140,9 @@ struct AddTransactionView: View {
                 }
             }
         }
-        .onAppear(perform: setMonthForCategories)
         .tabItem {
             Label("Add transaction", systemImage: "plus")
         }
-    }
-    
-    private func setMonthForCategories() {
-        categories.nsPredicate = NSPredicate(format: "month == %@", currentMonth)
     }
 }
 

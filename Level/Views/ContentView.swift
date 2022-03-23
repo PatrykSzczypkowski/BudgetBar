@@ -11,45 +11,29 @@ import Foundation
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Month.year, ascending: true),
-                          NSSortDescriptor(keyPath: \Month.month, ascending: true)])
-    private var months: FetchedResults<Month>
+    @StateObject var viewModel = LevelViewModel()
     
     @State private var selectedItem = 1
     @State private var shouldShowActionSheet = false
     @State private var oldSelectedItem = 1
-    @State private var currentMonth = Month()
     
     var body: some View {
         TabView(selection: $selectedItem) {
-            CategoriesView(currentMonth: $currentMonth).tag(1).onAppear { self.oldSelectedItem = self.selectedItem }
+            CategoriesView().tag(1).onAppear { self.oldSelectedItem = self.selectedItem }
             AccountsView().tag(2).onAppear { self.oldSelectedItem = self.selectedItem }
-            AddTransactionView(currentMonth: $currentMonth).tag(3).onAppear {
+            AddTransactionView(currentMonth: $viewModel.currentMonth).tag(3).onAppear {
                 self.shouldShowActionSheet.toggle()
                 self.selectedItem = self.oldSelectedItem
             }
             ReportsView().tag(4).onAppear { self.oldSelectedItem = self.selectedItem }
             SettingsView().tag(5).onAppear { self.oldSelectedItem = self.selectedItem }
         }
-        .onAppear(perform: setCurrentMonth)
+        .environmentObject(viewModel)
+        .onAppear(perform: viewModel.setCurrentMonth)
         .onAppear(perform: createMonths)
         .sheet(isPresented: $shouldShowActionSheet) {
-            AddTransactionView(currentMonth: $currentMonth)
-        }
-    }
-    
-    private func setCurrentMonth() {
-        let year = Calendar.current.component(.year, from: Date())
-        let month = Calendar.current.component(.month, from: Date())
-        
-        for m in months {
-            if(m.month == month && m.year == year) {
-                currentMonth = m
-                print("\(currentMonth.month) \(currentMonth.year)")
-                break
-            }
+            AddTransactionView(currentMonth: $viewModel.currentMonth)
+                .environmentObject(viewModel)
         }
     }
     
@@ -58,7 +42,7 @@ struct ContentView: View {
         let currentMonth = Calendar.current.component(.month, from: Date()) - 1
         var yearIncrement = 0
         
-        if(months.count == 0) {
+        if(viewModel.months.count == 0) {
             for i in 0..<24 {
                 let newMonth = Month(context: viewContext)
                 if((currentMonth + i) % 12 == 0) {
@@ -72,8 +56,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().preferredColorScheme(.dark).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView().preferredColorScheme(.dark).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//    }
+//}

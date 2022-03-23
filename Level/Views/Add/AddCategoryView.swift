@@ -10,8 +10,8 @@ import SwiftUI
 struct AddCategoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: LevelViewModel
     
-    @Binding var month: Month
     @State private var name = ""
     @State private var budget: Decimal = 0.00
     
@@ -28,6 +28,7 @@ struct AddCategoryView: View {
                     TextField("Required", value: $budget, format: .currency(code: "EUR"))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
+                    // small UIKit code to autoselect text when entering category balance
                         .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
                             if let textField = obj.object as? UITextField {
                                 textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
@@ -36,14 +37,7 @@ struct AddCategoryView: View {
                 }
                 Spacer()
                 Button("Add category") {
-                    let newCategory = Category(context: viewContext)
-                    newCategory.name = name
-                    newCategory.budget = NSDecimalNumber(decimal: budget)
-                    newCategory.balance = NSDecimalNumber(decimal: budget)
-                    
-                    month.addToCategories(newCategory)
-                    
-                    try? viewContext.save()
+                    viewModel.addCategory(name: name, budget: budget)
                     dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)

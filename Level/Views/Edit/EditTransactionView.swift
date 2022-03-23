@@ -10,24 +10,14 @@ import SwiftUI
 struct EditTransactionView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    
-    @FetchRequest<Category>(
-        entity: Category.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Category.userOrder, ascending: true)])
-    private var categories: FetchedResults<Category>
-    @FetchRequest<Account>(
-        entity: Account.entity(),
-        sortDescriptors: [])
-    private var accounts: FetchedResults<Account>
-    
-    @State var currentMonth: Month
+    @EnvironmentObject var viewModel: LevelViewModel
     
     @ObservedObject private var transaction: Transaction
     
     @State private var amount: Decimal
     @State private var inflow: Bool
     @State private var payee: String
-    @State private var category: Category
+    @State private var category: Category?
     @State private var account: Account
     @State private var date: Date
     @State private var notes: String
@@ -40,23 +30,38 @@ struct EditTransactionView: View {
         _amount = State(initialValue: transaction.amount?.decimalValue ?? 0)
         _inflow = State(initialValue: transaction.inflow)
         _payee = State(initialValue: transaction.payee ?? "")
-        _category = State(initialValue: transaction.category ?? Category())
+        _category = State(initialValue: transaction.category)
         _account = State(initialValue: transaction.account ?? Account())
         _date = State(initialValue: transaction.date ?? Date())
         _notes = State(initialValue: transaction.notes ?? "")
-        
-        _currentMonth = State(initialValue: transaction.category!.month!)
     }
     
     var body: some View {
         List {
             HStack {
-                Text("Amount")
-                Toggle(" ", isOn: $inflow)
-                    .toggleStyle(.button)
-                    .tint(Color.accentColor)
-                    .background(.red)
-                    .cornerRadius(5)
+                ZStack(alignment: .leading) {
+                    ZStack(alignment: .trailing) {
+                        if inflow {
+                            Color.darkGreen.ignoresSafeArea()
+                        }
+                        else {
+                            Color.darkRed.ignoresSafeArea()
+                        }
+                        Button(action: { inflow.toggle() }) {
+                            ZStack {
+                                Rectangle()
+                                .fill(inflow ? Color.accentColor : Color.red)
+                                .frame(width: 40, height: 44)
+                                Text(inflow ? "+" : "-")
+                                    .bold()
+                                    .font(.system(size: 16))
+                            }
+                                
+                        }
+                    }
+                    Text("Amount")
+                        .padding(.leading, 16)
+                }
                 TextField("Required", value: $amount, format: .currency(code: "EUR"))
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.decimalPad)
@@ -65,7 +70,9 @@ struct EditTransactionView: View {
                             textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                         }
                     }
+                    .padding(.trailing, 16)
             }
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             HStack {
                 Text("Payee")
                 TextField("Required", text: $payee)
@@ -75,7 +82,11 @@ struct EditTransactionView: View {
                 Text("Categories")
                 Spacer()
                 Menu(categoryString) {
-                    ForEach(categories) { category in
+                    Button("Transfer for account") {
+                        self.category = nil
+                        self.categoryString = "Transfer for account"
+                    }
+                    ForEach(viewModel.categories) { category in
                         Button(
                             action: {
                                 self.category = category
@@ -92,7 +103,7 @@ struct EditTransactionView: View {
                 Text("Accounts")
                 Spacer()
                 Menu(accountString) {
-                    ForEach(accounts) { account in
+                    ForEach(viewModel.accounts) { account in
                         Button(
                             action: {
                                 self.account = account
@@ -107,6 +118,11 @@ struct EditTransactionView: View {
             }
             HStack {
                 DatePicker("Date", selection: $date, displayedComponents: [.date])
+                    .onChange(of: date) { newDate in
+                        viewModel.currentMonth = viewModel.getMonthForDate(date: newDate)
+                        categoryString = "Category"
+                        category = nil
+                    }
             }
             VStack {
                 HStack {
@@ -118,24 +134,7 @@ struct EditTransactionView: View {
             }
             Spacer()
             Button("Edit transaction") {
-                // revert transactions
-                transaction.category!.balance! = transaction.category!.balance!.adding(NSDecimalNumber(decimal: !transaction.inflow ? transaction.amount!.decimalValue : -transaction.amount!.decimalValue))
-                transaction.account!.balance! = transaction.account!.balance!.adding(NSDecimalNumber(decimal: !transaction.inflow ? transaction.amount!.decimalValue : -transaction.amount!.decimalValue))
-                
-                // apply new change
-                category.balance = category.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
-                account.balance = account.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
-                
-                
-                transaction.amount = NSDecimalNumber(decimal: amount)
-                transaction.inflow = inflow
-                transaction.payee = payee
-                transaction.category = category
-                transaction.account = account
-                transaction.date = date
-                transaction.notes = notes
-                
-                try? viewContext.save()
+                viewModel.editTransaction(transaction: transaction, amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
                 dismiss()
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -143,16 +142,17 @@ struct EditTransactionView: View {
         }
         .listStyle(PlainListStyle())
         .navigationBarTitle("Edit transaction")
-        .onAppear(perform: setMonthForCategories)
+        .onAppear(perform: { viewModel.currentMonth = viewModel.getMonthForDate(date: date) })
         .onAppear(perform: setCategoryAndAccountStrings)
     }
     
-    private func setMonthForCategories() {
-        categories.nsPredicate = NSPredicate(format: "month == %@", currentMonth)
-    }
-    
     private func setCategoryAndAccountStrings() {
-        categoryString = category.name!
+        if (category != nil) {
+            categoryString = category!.name!
+        }
+        else {
+            categoryString = "Transfer for account"
+        }
         accountString = account.name!
     }
 }
