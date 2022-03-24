@@ -40,13 +40,14 @@ struct EditAccountView: View {
                             }
                         }
                 }
-                Spacer()
-                Button("Edit account") {
-                    viewModel.editAccount(account: account, name: name, balance: balance)
-                    dismiss()
+            }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Edit") {
+                        viewModel.editAccount(account: account, name: name, balance: balance)
+                        dismiss()
+                    }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .foregroundColor(Color.accentColor)
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("Edit account")

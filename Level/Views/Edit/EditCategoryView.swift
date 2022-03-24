@@ -40,13 +40,14 @@ struct EditCategoryView: View {
                         }
                     }
             }
-            Spacer()
-            Button("Edit category") {
-                viewModel.editCategory(category: category, name: name, budget: budget)
-                dismiss()
+        }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Edit") {
+                    viewModel.editCategory(category: category, name: name, budget: budget)
+                    dismiss()
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .foregroundColor(Color.accentColor)
         }
         .listStyle(PlainListStyle())
         .navigationBarTitle("Edit category")

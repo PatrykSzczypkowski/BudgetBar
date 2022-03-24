@@ -45,7 +45,7 @@ struct TransactionsPerAccountView: View {
         .onChange(of: searchString) { newString in
             viewModel.setTransactionsPerAccount(account: account, predicate: newString)
         }
-        .navigationTitle(account.name!)
+        .navigationTitle(account.name ?? "Account not found")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 EditButton()

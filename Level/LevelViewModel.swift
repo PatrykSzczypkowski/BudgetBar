@@ -9,10 +9,13 @@ import Foundation
 import CoreData
 
 class LevelViewModel: ObservableObject {
-    @Published var categories: [Category] = []
+    // arrays of all stored objects
     @Published var months: [Month] = []
     @Published var accounts: [Account] = []
     @Published var transactions: [Transaction] = []
+
+    // state arrays of objects
+    @Published var categoriesPerMonth: [Category] = []
     @Published var transactionsPerAccount: [Transaction] = []
     
     let context = PersistenceController.shared.container.viewContext
@@ -36,14 +39,36 @@ class LevelViewModel: ObservableObject {
         transactionsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Transaction.date, ascending: true)]
         
         do {
-            try categories = context.fetch(categoriesRequest)
             try months = context.fetch(monthsRequest)
+            createMonths()
+            
             try accounts = context.fetch(accountsRequest)
             try transactions = context.fetch(transactionsRequest)
+            try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {
             print(error)
         }
         setCurrentMonth()
+    }
+    
+    func createMonths() {
+        if(months.count == 0) {
+            let currentYear = Calendar.current.component(.year, from: Date())
+            let currentMonth = Calendar.current.component(.month, from: Date()) - 1
+            var yearIncrement = 0
+            
+            for i in 0..<24 {
+                let newMonth = Month(context: context)
+                if((currentMonth + i) % 12 == 0) {
+                    yearIncrement += 1
+                }
+                newMonth.month = Int16(((currentMonth + i) % 12) + 1)
+                newMonth.year = Int16(currentYear + yearIncrement)
+            }
+            try? context.save()
+            try? months = context.fetch(monthsRequest)
+            
+        }
     }
     
     func setCurrentMonth() {
@@ -77,7 +102,6 @@ class LevelViewModel: ObservableObject {
     }
     
     func addCategory(name: String, budget: Decimal) {
-        // TODO: add categories to future months
         let monthIndex = months.firstIndex(of: currentMonth)
         for index in (monthIndex ?? 0)..<months.count {
             let newCategory = Category(context: context)
@@ -90,7 +114,7 @@ class LevelViewModel: ObservableObject {
         try? context.save()
         
         do {
-            try categories = context.fetch(categoriesRequest)
+            try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {
             print(error)
         }
@@ -98,17 +122,18 @@ class LevelViewModel: ObservableObject {
     }
     
     func editCategory(category: Category, name: String, budget: Decimal) {
+        // TODO: edit category for future months
         category.name = name
         // update balance by the difference of the changed budget: balance = balance + (newBudget - oldBudget)
         category.balance =  category.balance!.adding(NSDecimalNumber(decimal: budget).subtracting(category.budget!))
         category.budget = NSDecimalNumber(decimal: budget)
         
         try? context.save()
-        try? categories = context.fetch(categoriesRequest)
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
     }
     
     func moveCategories(from source: IndexSet, to destination: Int) {
-        var revisedItems: [Category] = categories.map{ $0 }
+        var revisedItems: [Category] = categoriesPerMonth.map{ $0 }
         
         revisedItems.move(fromOffsets: source, toOffset: destination)
         
@@ -117,18 +142,18 @@ class LevelViewModel: ObservableObject {
         }
         
         do {
-            try categories = context.fetch(categoriesRequest)
+            try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {
             print(error)
         }
     }
     
     func deleteCategory(offsets: IndexSet) {
-        offsets.map { categories[$0] }.forEach(context.delete)
+        offsets.map { categoriesPerMonth[$0] }.forEach(context.delete)
 
         do {
             try context.save()
-            try categories = context.fetch(categoriesRequest)
+            try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {
             // Replace this implementation with code to handle the error appropriately.
             // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -141,7 +166,7 @@ class LevelViewModel: ObservableObject {
         monthString = "\(DateFormatter().shortStandaloneMonthSymbols[Int(currentMonth.month) - 1]) \(currentMonth.year)"
         categoriesRequest.predicate = NSPredicate(format: "month == %@", currentMonth)
         do {
-            try categories = context.fetch(categoriesRequest)
+            try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {
             print(error)
         }
@@ -188,6 +213,7 @@ class LevelViewModel: ObservableObject {
         newTransaction.date = date
         newTransaction.notes = notes
         
+        // TODO: add comment for the complicated looking calculations
         if (category != nil) {
             category!.addToTransactions(newTransaction)
             category!.balance = category!.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
@@ -256,10 +282,12 @@ class LevelViewModel: ObservableObject {
         if (predicate == "") {
             transactionsPerAccount = transactions.filter { $0.account == account }
         }
+        // Filtering transactions for search bar in TransactionsPerAccountView (can search for amount, payee and categories)
         transactionsPerAccount = transactions.filter { $0.account == account && ($0.amount?.stringValue == predicate || $0.payee!.lowercased().hasPrefix(predicate.lowercased()) || $0.category!.name!.lowercased().hasPrefix(predicate.lowercased())) }
     }
 }
 
+// extension allowing to break a Date() object into seperate Int components for day/month/year
 extension Date {
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)

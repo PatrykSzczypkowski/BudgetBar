@@ -54,7 +54,7 @@ struct EditTransactionView: View {
                                 .frame(width: 40, height: 44)
                                 Text(inflow ? "+" : "-")
                                     .bold()
-                                    .font(.system(size: 16))
+                                    .font(.system(size: 20))
                             }
                                 
                         }
@@ -86,7 +86,7 @@ struct EditTransactionView: View {
                         self.category = nil
                         self.categoryString = "Transfer for account"
                     }
-                    ForEach(viewModel.categories) { category in
+                    ForEach(viewModel.categoriesPerMonth) { category in
                         Button(
                             action: {
                                 self.category = category
@@ -116,29 +116,41 @@ struct EditTransactionView: View {
                     }
                 }
             }
-            HStack {
+            ZStack {
                 DatePicker("Date", selection: $date, displayedComponents: [.date])
                     .onChange(of: date) { newDate in
                         viewModel.currentMonth = viewModel.getMonthForDate(date: newDate)
                         categoryString = "Category"
                         category = nil
                     }
+                if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
+                    Text("Today").padding(.leading, 50)
+                }
             }
             VStack {
                 HStack {
                     Text("Notes")
                     Spacer()
                 }
-                TextEditor(text: $notes)
-                    .frame(maxWidth: .infinity, minHeight: 100)
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: $notes)
+                        .frame(maxWidth: .infinity, minHeight: 100)
+                    if (notes == "") {
+                        Text("Type notes here...")
+                            .foregroundColor(Color.gray)
+                            .padding(.top, 8)
+                            .padding(.leading, 5)
+                    }
+                }
             }
-            Spacer()
-            Button("Edit transaction") {
-                viewModel.editTransaction(transaction: transaction, amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
-                dismiss()
+        }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Edit") {
+                    viewModel.editTransaction(transaction: transaction, amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
+                    dismiss()
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .foregroundColor(Color.accentColor)
         }
         .listStyle(PlainListStyle())
         .navigationBarTitle("Edit transaction")

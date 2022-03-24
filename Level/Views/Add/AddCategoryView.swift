@@ -35,19 +35,18 @@ struct AddCategoryView: View {
                             }
                         }
                 }
-                Spacer()
-                Button("Add category") {
-                    viewModel.addCategory(name: name, budget: budget)
-                    dismiss()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .foregroundColor(Color.accentColor)
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("Add category")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        viewModel.addCategory(name: name, budget: budget)
                         dismiss()
                     }
                 }

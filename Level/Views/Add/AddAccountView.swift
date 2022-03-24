@@ -34,19 +34,18 @@ struct AddAccountView: View {
                             }
                         }
                 }
-                Spacer()
-                Button("Add account") {
-                    viewModel.addAccount(name: name, balance: balance)
-                    dismiss()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .foregroundColor(Color.accentColor)
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("Add account")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        viewModel.addAccount(name: name, balance: balance)
                         dismiss()
                     }
                 }

@@ -21,7 +21,7 @@ struct ContentView: View {
         TabView(selection: $selectedItem) {
             CategoriesView().tag(1).onAppear { self.oldSelectedItem = self.selectedItem }
             AccountsView().tag(2).onAppear { self.oldSelectedItem = self.selectedItem }
-            AddTransactionView(currentMonth: $viewModel.currentMonth).tag(3).onAppear {
+            AddTransactionView().tag(3).onAppear {
                 self.shouldShowActionSheet.toggle()
                 self.selectedItem = self.oldSelectedItem
             }
@@ -29,29 +29,9 @@ struct ContentView: View {
             SettingsView().tag(5).onAppear { self.oldSelectedItem = self.selectedItem }
         }
         .environmentObject(viewModel)
-        .onAppear(perform: viewModel.setCurrentMonth)
-        .onAppear(perform: createMonths)
         .sheet(isPresented: $shouldShowActionSheet) {
-            AddTransactionView(currentMonth: $viewModel.currentMonth)
+            AddTransactionView()
                 .environmentObject(viewModel)
-        }
-    }
-    
-    private func createMonths() {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        let currentMonth = Calendar.current.component(.month, from: Date()) - 1
-        var yearIncrement = 0
-        
-        if(viewModel.months.count == 0) {
-            for i in 0..<24 {
-                let newMonth = Month(context: viewContext)
-                if((currentMonth + i) % 12 == 0) {
-                    yearIncrement += 1
-                }
-                newMonth.month = Int16(((currentMonth + i) % 12) + 1)
-                newMonth.year = Int16(currentYear + yearIncrement)
-            }
-            try? viewContext.save()
         }
     }
 }

@@ -16,34 +16,8 @@ struct CategoriesView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.categories) { category in
-                    ZStack {
-                        NavigationLink (destination: EditCategoryView(category: category)) {
-                            EmptyView()
-                        }
-                        HStack {
-                            Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).padding(.leading, 16)
-                            ZStack(alignment: .trailing) {
-                                if category.balance!.doubleValue >= 0 {
-                                    Color.darkGreen.ignoresSafeArea()
-                                }
-                                else {
-                                    Color.darkRed.ignoresSafeArea()
-                                }
-                                GeometryReader { geo in
-                                    Rectangle()
-                                        .fill(Color.accentColor)
-                                        .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
-                                }
-                                HStack {
-                                    Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
-                                    Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
-                                }
-                            }
-                        }
-                    }
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .listRowSeparator(.hidden)
+                ForEach(viewModel.categoriesPerMonth) { category in
+                    CategoryRowView(category: category)
                 }
                 .onDelete(perform: viewModel.deleteCategory)
                 .onMove(perform: viewModel.moveCategories)
@@ -79,27 +53,41 @@ struct CategoriesView: View {
         }
     }
     
-//    struct CategoryRowView: View {
-//        @StateObject var category: Category
-//        
-//        var body: some View {
-//            HStack {
-//                Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).padding(.leading, 16)
-//                ZStack(alignment: .trailing) {
-//                    Color.darkGreen.ignoresSafeArea()
-//                    GeometryReader { geo in
-//                        Rectangle()
-//                            .fill(Color.accentColor)
-//                            .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
-//                    }
-//                    HStack {
-//                        Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
-//                        Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    struct CategoryRowView: View {
+        @StateObject var category: Category
+        
+        var body: some View {
+            if category.name != nil && category.budget != nil && category.balance != nil {
+                ZStack {
+                    NavigationLink (destination: EditCategoryView(category: category)) {
+                        EmptyView()
+                    }
+                    HStack {
+                        Text(category.name!).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).padding(.leading, 16)
+                        ZStack(alignment: .trailing) {
+                            if category.balance!.doubleValue >= 0 {
+                                Color.darkGreen.ignoresSafeArea()
+                            }
+                            else {
+                                Color.darkRed.ignoresSafeArea()
+                            }
+                            GeometryReader { geo in
+                                Rectangle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
+                            }
+                            HStack {
+                                Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
+                                Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
+                            }
+                        }
+                    }
+                }
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowSeparator(.hidden)
+            }
+        }
+    }
 }
 
 extension Color {
