@@ -107,7 +107,7 @@ struct AddTransactionView: View {
                 ZStack {
                     DatePicker("Date", selection: $date, displayedComponents: [.date])
                         .onChange(of: date) { newDate in
-                            viewModel.currentMonth = viewModel.getMonthForDate(date: newDate)
+                            viewModel.selectedMonth = viewModel.getMonthForDate(date: newDate)
                             categoryString = "Category"
                             category = nil
                         }

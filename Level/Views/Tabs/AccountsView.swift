@@ -23,7 +23,7 @@ struct AccountsView: View {
                             Text(account.name!)
                                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             Text(account.balance!.decimalValue, format: .currency(code: "EUR"))
-                                .foregroundColor(Color.green)
+                                .foregroundColor(account.balance!.decimalValue >= 0.0 ? Color.green : Color.red)
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing)
                         }
                     }

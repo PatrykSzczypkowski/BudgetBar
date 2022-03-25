@@ -25,7 +25,7 @@ class LevelViewModel: ObservableObject {
     let accountsRequest = Account.fetchRequest()
     let transactionsRequest = Transaction.fetchRequest()
     
-    var currentMonth = Month() {
+    var selectedMonth = Month() {
         didSet {
             setMonthForCategories()
         }
@@ -51,19 +51,49 @@ class LevelViewModel: ObservableObject {
         setCurrentMonth()
     }
     
+    func addMonthBefore() {
+        if (months.count > 0) {
+            let firstMonth = months.first!.month
+            let firstYear = months.first!.year
+            
+            let newMonth = Month(context: context)
+            newMonth.month = ((firstMonth - 2) % 12) + 1
+            newMonth.year = firstMonth == 1 ? firstYear - 1 : firstYear
+            
+            try? context.save()
+            try? months = context.fetch(monthsRequest)
+        }
+    }
+    
+    func addMonthAfter() {
+        if (months.count > 0) {
+            let lastMonth = months.last!.month
+            let lastYear = months.last!.year
+            
+            let newMonth = Month(context: context)
+            newMonth.month = ((lastMonth + 2) % 12) - 1
+            newMonth.year = lastMonth == 12 ? lastYear + 1 : lastYear
+            
+            try? context.save()
+            try? months = context.fetch(monthsRequest)
+        }
+    }
+    
     func createMonths() {
+        // initialize 12 months in advance
         if(months.count == 0) {
-            let currentYear = Calendar.current.component(.year, from: Date())
-            let currentMonth = Calendar.current.component(.month, from: Date()) - 1
+            let numberOfMonthsInAdvance = 12
+            let currentYearInt = Calendar.current.component(.year, from: Date())
+            let currentMonthInt = Calendar.current.component(.month, from: Date()) - 1
             var yearIncrement = 0
             
-            for i in 0..<24 {
+            for i in 0 ..< numberOfMonthsInAdvance {
                 let newMonth = Month(context: context)
-                if((currentMonth + i) % 12 == 0) {
+                if((currentMonthInt + i) % 12 == 0) {
                     yearIncrement += 1
                 }
-                newMonth.month = Int16(((currentMonth + i) % 12) + 1)
-                newMonth.year = Int16(currentYear + yearIncrement)
+                newMonth.month = Int16(((currentMonthInt + i) % 12) + 1)
+                newMonth.year = Int16(currentYearInt + yearIncrement)
             }
             try? context.save()
             try? months = context.fetch(monthsRequest)
@@ -77,8 +107,7 @@ class LevelViewModel: ObservableObject {
         
         for m in months {
             if(m.month == month && m.year == year) {
-                currentMonth = m
-                print("\(currentMonth.month) \(currentMonth.year)")
+                selectedMonth = m
                 break
             }
         }
@@ -102,7 +131,7 @@ class LevelViewModel: ObservableObject {
     }
     
     func addCategory(name: String, budget: Decimal) {
-        let monthIndex = months.firstIndex(of: currentMonth)
+        let monthIndex = months.firstIndex(of: selectedMonth)
         for index in (monthIndex ?? 0)..<months.count {
             let newCategory = Category(context: context)
             newCategory.name = name
@@ -163,8 +192,8 @@ class LevelViewModel: ObservableObject {
     }
     
     func setMonthForCategories() {
-        monthString = "\(DateFormatter().shortStandaloneMonthSymbols[Int(currentMonth.month) - 1]) \(currentMonth.year)"
-        categoriesRequest.predicate = NSPredicate(format: "month == %@", currentMonth)
+        monthString = "\(DateFormatter().shortStandaloneMonthSymbols[Int(selectedMonth.month) - 1]) \(selectedMonth.year)"
+        categoriesRequest.predicate = NSPredicate(format: "month == %@", selectedMonth)
         do {
             try categoriesPerMonth = context.fetch(categoriesRequest)
         } catch {

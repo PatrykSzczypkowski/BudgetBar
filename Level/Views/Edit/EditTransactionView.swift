@@ -119,7 +119,7 @@ struct EditTransactionView: View {
             ZStack {
                 DatePicker("Date", selection: $date, displayedComponents: [.date])
                     .onChange(of: date) { newDate in
-                        viewModel.currentMonth = viewModel.getMonthForDate(date: newDate)
+                        viewModel.selectedMonth = viewModel.getMonthForDate(date: newDate)
                         categoryString = "Category"
                         category = nil
                     }
@@ -154,7 +154,7 @@ struct EditTransactionView: View {
         }
         .listStyle(PlainListStyle())
         .navigationBarTitle("Edit transaction")
-        .onAppear(perform: { viewModel.currentMonth = viewModel.getMonthForDate(date: date) })
+        .onAppear(perform: { viewModel.selectedMonth = viewModel.getMonthForDate(date: date) })
         .onAppear(perform: setCategoryAndAccountStrings)
     }
     

@@ -27,10 +27,16 @@ struct CategoriesView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Menu (viewModel.monthString) {
-                        Picker(viewModel.monthString, selection: $viewModel.currentMonth) {
+                        Button("Add month before") {
+                            viewModel.addMonthBefore()
+                        }
+                        Picker(viewModel.monthString, selection: $viewModel.selectedMonth) {
                             ForEach(viewModel.months, id: \.self) { month in
                                 Text(verbatim: "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)")
                             }
+                        }
+                        Button("Add month after") {
+                            viewModel.addMonthAfter()
                         }
                     }
                 }

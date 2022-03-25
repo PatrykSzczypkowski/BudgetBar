@@ -14,8 +14,11 @@ struct ReportsView: View {
     var body: some View {
         NavigationView {
             VStack {
-                LineChart(entries: getSpendingsEntries())
-            }.frame(height: 400, alignment: .center)
+                SpendingLineChart(entries: getSpending().entries, months: getSpending().months)
+                    .frame(height: 300, alignment: .center)
+                SpendingLineChart(entries: getSpending().entries, months: getSpending().months)
+                    .frame(height: 300, alignment: .center)
+            }
             .navigationTitle("Reports")
         }
         .tabItem {
@@ -23,12 +26,23 @@ struct ReportsView: View {
         }
     }
     
-    func getSpendingsEntries() -> [ChartDataEntry] {
+    func getSpending() -> (entries: [ChartDataEntry], months: [String]) {
         var entries: [ChartDataEntry] = []
+        var months: [String] = []
         var counter = 0.0
-        for month in viewModel.months {
+        
+        var relevantMonths = viewModel.months
+        var startIndex = 0
+        let indexOfCurrentMonth = relevantMonths.firstIndex(of: viewModel.getMonthForDate(date: Date()))
+        
+        if (indexOfCurrentMonth != nil) {
+            startIndex = indexOfCurrentMonth! - 6 > 0 ? indexOfCurrentMonth! - 6 : 0
+        }
+        
+        relevantMonths = Array(relevantMonths[startIndex...(indexOfCurrentMonth ?? 0)])
+        
+        for month in relevantMonths {
             if (month.categories!.count != 0) {
-                counter += 1
                 var monthlySpendings: Decimal = 0.0
                 
                 for category in month.categories!.array as! [Category] {
@@ -41,14 +55,19 @@ struct ReportsView: View {
                 print("\(month.month).\(month.year): \(monthlySpendings)")
                 //            let x = "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)"
                 entries.append(ChartDataEntry(x: counter, y: (monthlySpendings as NSDecimalNumber).doubleValue))
+                months.append(DateFormatter().shortStandaloneMonthSymbols[Int(month.month) - 1])
+                
+                counter += 1
             }
         }
-        return entries
+        print(months)
+        return (entries, months)
     }
 }
 
-struct LineChart: UIViewRepresentable {
+struct SpendingLineChart: UIViewRepresentable {
     var entries: [ChartDataEntry]
+    var months: [String]
     
     func makeUIView(context: Context) -> LineChartView {
         let chart = LineChartView()
@@ -60,14 +79,16 @@ struct LineChart: UIViewRepresentable {
         chart.xAxis.axisMinimum = 0
         chart.xAxis.labelPosition = XAxis.LabelPosition.bottom
         chart.xAxis.drawGridLinesEnabled = false
+//        chart.xAxis.
         
         chart.doubleTapToZoomEnabled = false
         chart.setScaleEnabled(false)
         chart.pinchZoomEnabled = false
+        chart.legend.enabled = false
         
         chart.data = addData()
-        
-        chart.xAxis.valueFormatter = IndexAxisValueFormatter(values: ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
+        // need to be dynamic
+        chart.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
         
         return chart
     }
@@ -77,7 +98,7 @@ struct LineChart: UIViewRepresentable {
     }
     
     func addData() -> LineChartData{
-        let dataSet = LineChartDataSet(entries: entries, label: "Spendings")
+        let dataSet = LineChartDataSet(entries: entries, label: "Spending")
         
         // Data points styling
         dataSet.colors = [NSUIColor.green]
