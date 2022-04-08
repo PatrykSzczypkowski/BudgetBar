@@ -10,7 +10,7 @@ import SwiftUI
 struct EditAccountView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @ObservedObject private var account: Account
     @State private var name: String
@@ -31,7 +31,7 @@ struct EditAccountView: View {
                 }
                 HStack {
                     Text("Current balance")
-                    TextField("Required", value: $balance, format: .currency(code: "EUR"))
+                    TextField("Required", value: $balance, format: .currency(code: manager.currency))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
                         .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -43,8 +43,8 @@ struct EditAccountView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Edit") {
-                        viewModel.editAccount(account: account, name: name, balance: balance)
+                    Button("Save") {
+                        manager.editAccount(account: account, name: name, balance: balance)
                         dismiss()
                     }
                 }

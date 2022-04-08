@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct LevelApp: App {
     let persistenceController = PersistenceController.shared
-
+    let manager = LevelManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(manager)
         }
     }
 }

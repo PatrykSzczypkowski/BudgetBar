@@ -10,7 +10,7 @@ import SwiftUI
 struct AddCategoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @State private var name = ""
     @State private var budget: Decimal = 0.00
@@ -25,7 +25,7 @@ struct AddCategoryView: View {
                 }
                 HStack {
                     Text("Budget")
-                    TextField("Required", value: $budget, format: .currency(code: "EUR"))
+                    TextField("Required", value: $budget, format: .currency(code: manager.currency))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
                     // small UIKit code to autoselect text when entering category balance
@@ -46,7 +46,7 @@ struct AddCategoryView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        viewModel.addCategory(name: name, budget: budget)
+                        manager.addCategory(name: name, budget: budget)
                         dismiss()
                     }
                 }

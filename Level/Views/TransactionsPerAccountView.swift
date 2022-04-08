@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionsPerAccountView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @ObservedObject var account: Account
 
@@ -17,7 +17,7 @@ struct TransactionsPerAccountView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.transactionsPerAccount) { transaction in
+            ForEach(manager.transactionsPerAccount) { transaction in
                 NavigationLink(destination: EditTransactionView(transaction: transaction)) {
                     HStack {
                         VStack(spacing: 0) {
@@ -29,21 +29,21 @@ struct TransactionsPerAccountView: View {
                                 .font(.system(size: 12))
                         }
                         Spacer()
-                        Text(transaction.amount!.decimalValue, format: .currency(code: "EUR"))
+                        Text(transaction.amount!.decimalValue, format: .currency(code: manager.currency))
                             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing)
                             .foregroundColor(transaction.inflow ? Color.accentColor : Color.red)
                     }
                 }
             }
             .onDelete(perform: { index in
-                viewModel.deleteTransaction(offsets: index)
-                viewModel.setTransactionsPerAccount(account: account)
+                manager.deleteTransaction(offsets: index)
+                manager.setTransactionsPerAccount(account: account)
             })
         }
-        .onAppear(perform: { viewModel.setTransactionsPerAccount(account: account) })
+        .onAppear(perform: { manager.setTransactionsPerAccount(account: account) })
         .searchable(text: $searchString, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search amount, payees or category")
         .onChange(of: searchString) { newString in
-            viewModel.setTransactionsPerAccount(account: account, predicate: newString)
+            manager.setTransactionsPerAccount(account: account, predicate: newString)
         }
         .navigationTitle(account.name ?? "Account not found")
         .toolbar {

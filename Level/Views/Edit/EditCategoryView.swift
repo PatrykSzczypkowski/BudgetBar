@@ -10,7 +10,7 @@ import SwiftUI
 struct EditCategoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @ObservedObject private var category: Category
     @State private var name: String
@@ -31,7 +31,7 @@ struct EditCategoryView: View {
             }
             HStack {
                 Text("Budget")
-                TextField("Required", value: $budget, format: .currency(code: "EUR"))
+                TextField("Required", value: $budget, format: .currency(code: manager.currency))
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.decimalPad)
                     .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -43,8 +43,8 @@ struct EditCategoryView: View {
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Edit") {
-                    viewModel.editCategory(category: category, name: name, budget: budget)
+                Button("Save") {
+                    manager.editCategory(category: category, name: name, budget: budget)
                     dismiss()
                 }
             }

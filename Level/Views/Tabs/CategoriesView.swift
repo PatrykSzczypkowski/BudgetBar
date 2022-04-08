@@ -9,34 +9,55 @@ import SwiftUI
 
 struct CategoriesView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @State private var showAddCategorySheet = false
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.categoriesPerMonth) { category in
-                    CategoryRowView(category: category)
+                if (manager.categoriesPerMonth.count == 0) {
+                    VStack {
+                        Spacer()
+                        Text("""
+                        Follow these steps to add your first budgeting category:
+                        
+                        1. Tap on \(Image(systemName: "plus")) in the top-right corner of your screen
+                        
+                        2. Enter your category name and its budget for the whole month
+                        
+                        3. Tap on the Add button in the top-right corner
+                        
+                        """)
+                        Spacer()
+                        Spacer()
+                    }
                 }
-                .onDelete(perform: viewModel.deleteCategory)
-                .onMove(perform: viewModel.moveCategories)
+                else {
+                    ForEach(manager.categoriesPerMonth) { category in
+                        CategoryRowView(category: category)
+                    }
+                    .onDelete(perform: manager.deleteCategory)
+                    .onMove(perform: manager.moveCategories)
+                    Spacer()
+                    MonthBalanceBar(sums: getSumsOfAllCategories(month: manager.selectedMonth))
+                }
             }
             .listStyle(PlainListStyle())
             .navigationTitle("Categories")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Menu (viewModel.monthString) {
+                    Menu (manager.monthString) {
                         Button("Add month before") {
-                            viewModel.addMonthBefore()
+                            manager.addMonthBefore()
                         }
-                        Picker(viewModel.monthString, selection: $viewModel.selectedMonth) {
-                            ForEach(viewModel.months, id: \.self) { month in
+                        Picker(manager.monthString, selection: $manager.selectedMonth) {
+                            ForEach(manager.months, id: \.self) { month in
                                 Text(verbatim: "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)")
                             }
                         }
                         Button("Add month after") {
-                            viewModel.addMonthAfter()
+                            manager.addMonthAfter()
                         }
                     }
                 }
@@ -60,6 +81,7 @@ struct CategoriesView: View {
     }
     
     struct CategoryRowView: View {
+        @EnvironmentObject var manager: LevelManager
         @StateObject var category: Category
         
         var body: some View {
@@ -83,8 +105,8 @@ struct CategoriesView: View {
                                     .frame(width: geo.size.width * (category.balance!.doubleValue / category.budget!.doubleValue), height: geo.size.height, alignment: .trailing)
                             }
                             HStack {
-                                Text(category.balance!.decimalValue, format: .currency(code: "EUR")).padding(.leading, 5)
-                                Text(category.budget!.decimalValue, format: .currency(code: "EUR")).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
+                                Text(category.balance!.decimalValue, format: .currency(code: manager.currency)).padding(.leading, 5)
+                                Text(category.budget!.decimalValue, format: .currency(code: manager.currency)).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
                             }
                         }
                     }
@@ -93,6 +115,58 @@ struct CategoriesView: View {
                 .listRowSeparator(.hidden)
             }
         }
+    }
+    
+    struct MonthBalanceBar: View {
+        @EnvironmentObject var manager: LevelManager
+        var balance: Decimal
+        var budget: Decimal
+        
+        init (sums: (balance: Decimal, budget: Decimal)) {
+            self.balance = sums.balance
+            self.budget = sums.budget
+        }
+        
+        var body: some View {
+            VStack {
+                Text("This months budget").frame(alignment: .center).font(.system(size: 14)).foregroundColor(.gray)
+                HStack {
+                    ZStack(alignment: .trailing) {
+                        if balance >= 0 {
+                            Color.darkGreen.ignoresSafeArea()
+                        }
+                        else {
+                            Color.darkRed.ignoresSafeArea()
+                        }
+                        GeometryReader { geo in
+                            Rectangle()
+                                .fill(Color.accentColor)
+                                .frame(width: geo.size.width * (NSDecimalNumber(decimal: balance).doubleValue / NSDecimalNumber(decimal: budget).doubleValue), height: geo.size.height, alignment: .trailing)
+                        }
+                        HStack {
+                            Text(balance, format: .currency(code: manager.currency)).padding(.leading, 5)
+                            Text(budget, format: .currency(code: manager.currency)).frame(maxWidth: .infinity, minHeight: 30, alignment: .trailing).padding(.trailing, 5)
+                        }
+                    }
+                }
+            }
+            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+            .listRowSeparator(.hidden)
+        }
+    }
+    
+    func getSumsOfAllCategories(month: Month) -> (balance: Decimal, budget: Decimal) {
+        var balance: Decimal = 0.00
+        var budget: Decimal = 0.00
+        
+        if (month.categories?.count ?? 0 > 0) {
+            for category in month.categories!.array as! [Category] {
+                balance += category.balance!.decimalValue
+                budget += category.budget!.decimalValue
+            }
+        }
+        
+        return (balance, budget)
     }
 }
 

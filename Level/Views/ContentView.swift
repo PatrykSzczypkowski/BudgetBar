@@ -11,7 +11,6 @@ import Foundation
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject var viewModel = LevelViewModel()
     
     @State private var selectedItem = 1
     @State private var shouldShowActionSheet = false
@@ -28,10 +27,8 @@ struct ContentView: View {
             ReportsView().tag(4).onAppear { self.oldSelectedItem = self.selectedItem }
             SettingsView().tag(5).onAppear { self.oldSelectedItem = self.selectedItem }
         }
-        .environmentObject(viewModel)
         .sheet(isPresented: $shouldShowActionSheet) {
             AddTransactionView()
-                .environmentObject(viewModel)
         }
     }
 }

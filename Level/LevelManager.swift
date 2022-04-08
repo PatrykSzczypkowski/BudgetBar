@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class LevelViewModel: ObservableObject {
+class LevelManager: ObservableObject {
     // arrays of all stored objects
     @Published var months: [Month] = []
     @Published var accounts: [Account] = []
@@ -18,8 +18,19 @@ class LevelViewModel: ObservableObject {
     @Published var categoriesPerMonth: [Category] = []
     @Published var transactionsPerAccount: [Transaction] = []
     
-    let context = PersistenceController.shared.container.viewContext
+    @Published var monthsAhead: Int = UserDefaults.standard.integer(forKey: "monthsAhead") {
+        didSet {
+            UserDefaults.standard.set(monthsAhead, forKey: "monthsAhead")
+            appendMonths()
+        }
+    }
+    @Published var currency: String = UserDefaults.standard.string(forKey: "currency") ?? "EUR" {
+        didSet {
+            UserDefaults.standard.set(currency, forKey: "currency")
+        }
+    }
     
+    let context = PersistenceController.shared.container.viewContext
     let categoriesRequest = Category.fetchRequest()
     let monthsRequest = Month.fetchRequest()
     let accountsRequest = Account.fetchRequest()
@@ -36,11 +47,11 @@ class LevelViewModel: ObservableObject {
         monthsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Month.year, ascending: true), NSSortDescriptor(keyPath: \Month.month, ascending: true)]
         categoriesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Category.userOrder, ascending: true)]
         accountsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Account.name, ascending: true)]
-        transactionsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Transaction.date, ascending: true)]
+        transactionsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Transaction.date, ascending: false)]
         
         do {
             try months = context.fetch(monthsRequest)
-            createMonths()
+            initializeMonths()
             
             try accounts = context.fetch(accountsRequest)
             try transactions = context.fetch(transactionsRequest)
@@ -53,12 +64,21 @@ class LevelViewModel: ObservableObject {
     
     func addMonthBefore() {
         if (months.count > 0) {
-            let firstMonth = months.first!.month
-            let firstYear = months.first!.year
+            let calendar = Calendar.current
+
+            var dateComponents = DateComponents()
+            // set components of the first month in store
+            dateComponents.month = Int(months.first!.month)
+            dateComponents.year = Int(months.first!.year)
+            
+            // move starting date to the date of the first month in array
+            var nextDate = calendar.date(from: dateComponents)!
+            nextDate = calendar.date(byAdding: .month, value: -1, to: nextDate)!
+            let components = nextDate.get(.month, .year)
             
             let newMonth = Month(context: context)
-            newMonth.month = ((firstMonth - 2) % 12) + 1
-            newMonth.year = firstMonth == 1 ? firstYear - 1 : firstYear
+            newMonth.month = Int16(components.month!)
+            newMonth.year = Int16(components.year!)
             
             try? context.save()
             try? months = context.fetch(monthsRequest)
@@ -67,38 +87,102 @@ class LevelViewModel: ObservableObject {
     
     func addMonthAfter() {
         if (months.count > 0) {
-            let lastMonth = months.last!.month
-            let lastYear = months.last!.year
+            let calendar = Calendar.current
+
+            var dateComponents = DateComponents()
+            // set components of the first month in store
+            dateComponents.month = Int(months.last!.month)
+            dateComponents.year = Int(months.last!.year)
+            
+            // move starting date to the date of the first month in array
+            var nextDate = calendar.date(from: dateComponents)!
+            nextDate = calendar.date(byAdding: .month, value: 1, to: nextDate)!
+            let components = nextDate.get(.month, .year)
             
             let newMonth = Month(context: context)
-            newMonth.month = ((lastMonth + 2) % 12) - 1
-            newMonth.year = lastMonth == 12 ? lastYear + 1 : lastYear
+            newMonth.month = Int16(components.month!)
+            newMonth.year = Int16(components.year!)
             
             try? context.save()
             try? months = context.fetch(monthsRequest)
         }
     }
     
-    func createMonths() {
-        // initialize 12 months in advance
+    func initializeMonths() {
+        // only run if there were no months initialized (the assumption is the app was ran for the first time)
         if(months.count == 0) {
-            let numberOfMonthsInAdvance = 12
-            let currentYearInt = Calendar.current.component(.year, from: Date())
-            let currentMonthInt = Calendar.current.component(.month, from: Date()) - 1
-            var yearIncrement = 0
+            monthsAhead = 3
+            // create current month + number of monthsAhead
+            let calendar = Calendar.current
             
-            for i in 0 ..< numberOfMonthsInAdvance {
+            for i in 0 ... monthsAhead {
+                var nextDate = Date()
+                nextDate = calendar.date(byAdding: .month, value: i, to: nextDate)!
+                let components = nextDate.get(.month, .year)
+                
                 let newMonth = Month(context: context)
-                if((currentMonthInt + i) % 12 == 0) {
-                    yearIncrement += 1
-                }
-                newMonth.month = Int16(((currentMonthInt + i) % 12) + 1)
-                newMonth.year = Int16(currentYearInt + yearIncrement)
+                newMonth.month = Int16(components.month!)
+                newMonth.year = Int16(components.year!)
             }
+            
             try? context.save()
             try? months = context.fetch(monthsRequest)
-            
         }
+    }
+    
+    func appendMonths() {
+        // create months if there are less months ahead than expected
+        if (months.count > 0) {
+            let calendar = Calendar.current
+            let currentMonthIndex = months.firstIndex(of: getCurrentMonth())
+            let lastMonthIndex = months.firstIndex(of: months.last!)
+            let difference = lastMonthIndex! - currentMonthIndex!
+            
+            if(difference < monthsAhead) {
+                let monthsToCreate = monthsAhead - difference
+                for i in 1 ...  monthsToCreate {
+                    var dateComponents = DateComponents()
+                    // set components of the last month in store
+                    dateComponents.month = Int(months.last!.month)
+                    dateComponents.year = Int(months.last!.year)
+                    
+                    // move starting date to the date of the last month in array
+                    var nextDate = calendar.date(from: dateComponents)!
+                    nextDate = calendar.date(byAdding: .month, value: i, to: nextDate)!
+                    let components = nextDate.get(.month, .year)
+                    
+                    let newMonth = Month(context: context)
+                    newMonth.month = Int16(components.month!)
+                    newMonth.year = Int16(components.year!)
+                }
+            }
+            
+            try? context.save()
+            try? months = context.fetch(monthsRequest)
+        }
+    }
+    
+    func getCurrentMonth() -> Month {
+        let year = Calendar.current.component(.year, from: Date())
+        let month = Calendar.current.component(.month, from: Date())
+        
+        for m in months {
+            if(m.month == month && m.year == year) {
+                return m
+            }
+        }
+        
+        // if current month is not found then create one and save it
+        let components = Date().get(.month, .year)
+        
+        let newMonth = Month(context: context)
+        newMonth.month = Int16(components.month!)
+        newMonth.year = Int16(components.year!)
+        
+        try? context.save()
+        try? months = context.fetch(monthsRequest)
+        
+        return newMonth
     }
     
     func setCurrentMonth() {

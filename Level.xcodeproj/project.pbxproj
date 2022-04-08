@@ -27,7 +27,7 @@
 		5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D927B2BEB40071F53F /* AccountsView.swift */; };
 		5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DB27B2C1320071F53F /* EditAccountView.swift */; };
 		5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */; };
-		5EE2B85B27E76EF100F72AD5 /* LevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */; };
+		5EE2B85B27E76EF100F72AD5 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B85A27E76EF100F72AD5 /* LevelManager.swift */; };
 		5EE2B85E27E8B0D500F72AD5 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 5EE2B85D27E8B0D500F72AD5 /* Charts */; };
 /* End PBXBuildFile section */
 
@@ -101,7 +101,7 @@
 		5E9A47D927B2BEB40071F53F /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		5E9A47DB27B2C1320071F53F /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
-		5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelViewModel.swift; sourceTree = "<group>"; };
+		5EE2B85A27E76EF100F72AD5 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,7 +212,7 @@
 				5E7F74B027A44095009B9BB6 /* Persistence.swift */,
 				5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */,
 				5E7F74AD27A44095009B9BB6 /* Preview Content */,
-				5EE2B85A27E76EF100F72AD5 /* LevelViewModel.swift */,
+				5EE2B85A27E76EF100F72AD5 /* LevelManager.swift */,
 			);
 			path = Level;
 			sourceTree = "<group>";
@@ -414,7 +414,7 @@
 				5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */,
 				5E1B79E827C7BA7E004B58B4 /* AddTransactionView.swift in Sources */,
 				5E7F74B127A44095009B9BB6 /* Persistence.swift in Sources */,
-				5EE2B85B27E76EF100F72AD5 /* LevelViewModel.swift in Sources */,
+				5EE2B85B27E76EF100F72AD5 /* LevelManager.swift in Sources */,
 				5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */,
 				5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */,
 				5E5DAD4F27C7F2F30014D3ED /* EditTransactionView.swift in Sources */,

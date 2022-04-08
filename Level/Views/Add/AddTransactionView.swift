@@ -10,7 +10,7 @@ import SwiftUI
 struct AddTransactionView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @State private var amount: Decimal = 0.00
     @State private var inflow: Bool = false
@@ -20,8 +20,9 @@ struct AddTransactionView: View {
     @State private var date: Date = Date()
     @State private var notes: String = ""
     
-    @State private var categoryString: String = "Category"
-    @State private var accountString: String = "Account"
+    @State private var categoryString: String = "Required"
+    @State private var accountString: String = "Required"
+    @State private var shouldAddButtonBeDisabled = true
     
     var body: some View {
         NavigationView {
@@ -35,24 +36,31 @@ struct AddTransactionView: View {
                             else {
                                 Color.darkRed.ignoresSafeArea()
                             }
-                            Button(action: { inflow.toggle() }) {
-                                ZStack {
-                                    Rectangle()
-                                    .fill(inflow ? Color.accentColor : Color.red)
-                                    .frame(width: 40, height: 44)
-                                    Text(inflow ? "+" : "–")
-                                        .bold()
-                                        .font(.system(size: 20))
+                            GeometryReader { geo in
+                                Button(action: { inflow.toggle() }) {
+                                    HStack {
+                                        Spacer()
+                                        ZStack {
+                                            Rectangle()
+                                                .fill(inflow ? Color.accentColor : Color.red)
+                                                .frame(width: 40, height: geo.size.height)
+                                            Text(inflow ? "+" : "–")
+                                                .bold()
+                                                .font(.system(size: 20))
+                                        }
+                                    }
                                 }
-                                    
                             }
                         }
                         Text("Amount")
                             .padding(.leading, 16)
                     }
-                    TextField("Required", value: $amount, format: .currency(code: "EUR"))
+                    TextField("Required", value: $amount, format: .currency(code: manager.currency))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
+                        .onChange(of: amount) { newValue in
+                            formValidation()
+                        }
                         .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
                             if let textField = obj.object as? UITextField {
                                 textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
@@ -65,6 +73,9 @@ struct AddTransactionView: View {
                     Text("Payee")
                     TextField("Required", text: $payee)
                         .multilineTextAlignment(.trailing)
+                        .onChange(of: payee) { newValue in
+                            formValidation()
+                        }
                 }
                 HStack {
                     Text("Categories")
@@ -74,7 +85,7 @@ struct AddTransactionView: View {
                             self.category = nil
                             self.categoryString = "Transfer for account"
                         }
-                        ForEach(viewModel.categoriesPerMonth) { category in
+                        ForEach(manager.categoriesPerMonth) { category in
                             Button(
                                 action: {
                                     self.category = category
@@ -84,6 +95,9 @@ struct AddTransactionView: View {
                                     Text(category.name!)
                                 }
                             )
+                            .onChange(of: categoryString) { newValue in
+                                formValidation()
+                            }
                         }
                     }
                 }
@@ -91,7 +105,7 @@ struct AddTransactionView: View {
                     Text("Accounts")
                     Spacer()
                     Menu(accountString) {
-                        ForEach(viewModel.accounts) { account in
+                        ForEach(manager.accounts) { account in
                             Button(
                                 action: {
                                     self.account = account
@@ -101,18 +115,23 @@ struct AddTransactionView: View {
                                     Text(account.name!)
                                 }
                             )
+                            .onChange(of: accountString) { newValue in
+                                formValidation()
+                            }
                         }
                     }
                 }
                 ZStack {
                     DatePicker("Date", selection: $date, displayedComponents: [.date])
                         .onChange(of: date) { newDate in
-                            viewModel.selectedMonth = viewModel.getMonthForDate(date: newDate)
-                            categoryString = "Category"
+                            manager.selectedMonth = manager.getMonthForDate(date: newDate)
+                            categoryString = "Required"
                             category = nil
                         }
                     if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
-                        Text("Today").padding(.leading, 50)
+                        Spacer()
+                        Text("Today")
+                        Spacer()
                     }
                 }
                 VStack {
@@ -140,9 +159,10 @@ struct AddTransactionView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        viewModel.addTransaction(amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
+                        manager.addTransaction(amount: amount, inflow: inflow, payee: payee, category: category, account: account, date: date, notes: notes)
                         dismiss()
                     }
+                    .disabled(shouldAddButtonBeDisabled)
                 }
             }
             .listStyle(PlainListStyle())
@@ -151,6 +171,11 @@ struct AddTransactionView: View {
         .tabItem {
             Label("Add transaction", systemImage: "plus")
         }
+    }
+    
+    private func formValidation() {
+        if (amount == 0.00 || payee == "" || categoryString == "Required" || accountString == "Required") { shouldAddButtonBeDisabled = true }
+        else { shouldAddButtonBeDisabled = false }
     }
 }
 

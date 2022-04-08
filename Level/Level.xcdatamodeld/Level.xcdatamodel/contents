@@ -28,9 +28,9 @@
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="transactions" inverseEntity="Category"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-174.804443359375" positionY="43.24658203125" width="128" height="88"/>
+        <element name="Account" positionX="-66.8057861328125" positionY="-158.1205749511719" width="128" height="88"/>
         <element name="Category" positionX="-424.4251708984375" positionY="93.70303344726562" width="128" height="133"/>
         <element name="Month" positionX="-453.495849609375" positionY="-134.3269958496094" width="128" height="88"/>
-        <element name="Transaction" positionX="115.0155029296875" positionY="79.72903442382812" width="128" height="134"/>
+        <element name="Transaction" positionX="-71.7845458984375" positionY="77.65444946289062" width="128" height="134"/>
     </elements>
 </model>

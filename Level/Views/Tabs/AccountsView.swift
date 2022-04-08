@@ -9,26 +9,45 @@ import SwiftUI
 
 struct AccountsView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var viewModel: LevelViewModel
+    @EnvironmentObject var manager: LevelManager
     
     @State private var showAddAccountSheet = false
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.accounts) { account in
-                    NavigationLink (destination: TransactionsPerAccountView(account: account))
-                    {
-                        HStack {
-                            Text(account.name!)
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            Text(account.balance!.decimalValue, format: .currency(code: "EUR"))
-                                .foregroundColor(account.balance!.decimalValue >= 0.0 ? Color.green : Color.red)
-                                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing)
-                        }
+                if (manager.accounts.count == 0) {
+                    VStack {
+                        Spacer()
+                        Text("""
+                        Follow these steps to add your first account:
+                        
+                        1. Tap on \(Image(systemName: "plus")) in the top-right corner of your screen
+                        
+                        2. Enter your account name and its current balance
+                        
+                        3. Tap on the Add button in the top-right corner
+                        
+                        """)
+                        Spacer()
+                        Spacer()
                     }
                 }
-                .onDelete(perform: viewModel.deleteAccount)
+                else {
+                    ForEach(manager.accounts) { account in
+                        NavigationLink (destination: TransactionsPerAccountView(account: account))
+                        {
+                            HStack {
+                                Text(account.name!)
+                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                                Text(account.balance!.decimalValue, format: .currency(code: manager.currency))
+                                    .foregroundColor(account.balance!.decimalValue >= 0.0 ? Color.green : Color.red)
+                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing)
+                            }
+                        }
+                    }
+                    .onDelete(perform: manager.deleteAccount)
+                }
             }
             .navigationTitle("Accounts")
             .toolbar {
