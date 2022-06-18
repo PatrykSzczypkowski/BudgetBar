@@ -21,15 +21,15 @@ struct TransactionsPerAccountView: View {
                 NavigationLink(destination: EditTransactionView(transaction: transaction)) {
                     HStack {
                         VStack(spacing: 0) {
-                            Text(transaction.payee!)
+                            Text(transaction.payee ?? "")
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text(DateFormatter.localizedString(from: transaction.date!, dateStyle: .short, timeStyle: .none))
+                            Text(DateFormatter.localizedString(from: transaction.date ?? Date(), dateStyle: .short, timeStyle: .none))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                                 .foregroundColor(.gray)
                                 .font(.system(size: 12))
                         }
                         Spacer()
-                        Text(transaction.amount!.decimalValue, format: .currency(code: manager.currency))
+                        Text(transaction.amount?.decimalValue ?? Decimal(0.0), format: .currency(code: manager.currency))
                             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 30, alignment: .trailing)
                             .foregroundColor(transaction.inflow ? Color.accentColor : Color.red)
                     }

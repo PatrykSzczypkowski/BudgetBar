@@ -91,6 +91,19 @@ struct EditTransactionView: View {
                         formValidation()
                     }
             }
+            ZStack {
+                DatePicker("Date", selection: $date, displayedComponents: [.date])
+                    .onChange(of: date) { newDate in
+                        manager.selectedMonth = manager.getMonthForDate(date: newDate)
+                        categoryString = "Required"
+                        category = nil
+                    }
+                if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
+                    Spacer()
+                    Text("Today")
+                    Spacer()
+                }
+            }
             HStack {
                 Text("Categories")
                 Spacer()
@@ -133,19 +146,6 @@ struct EditTransactionView: View {
                             formValidation()
                         }
                     }
-                }
-            }
-            ZStack {
-                DatePicker("Date", selection: $date, displayedComponents: [.date])
-                    .onChange(of: date) { newDate in
-                        manager.selectedMonth = manager.getMonthForDate(date: newDate)
-                        categoryString = "Required"
-                        category = nil
-                    }
-                if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
-                    Spacer()
-                    Text("Today")
-                    Spacer()
                 }
             }
             VStack {

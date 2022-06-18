@@ -16,6 +16,7 @@ struct CategoriesView: View {
     var body: some View {
         NavigationView {
             List {
+                // display if there are no categories for selected month
                 if (manager.categoriesPerMonth.count == 0) {
                     VStack {
                         Spacer()

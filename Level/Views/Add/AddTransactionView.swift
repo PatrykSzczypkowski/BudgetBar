@@ -77,6 +77,19 @@ struct AddTransactionView: View {
                             formValidation()
                         }
                 }
+                ZStack {
+                    DatePicker("Date", selection: $date, displayedComponents: [.date])
+                        .onChange(of: date) { newDate in
+                            manager.selectedMonth = manager.getMonthForDate(date: newDate)
+                            categoryString = "Required"
+                            category = nil
+                        }
+                    if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
+                        Spacer()
+                        Text("Today")
+                        Spacer()
+                    }
+                }
                 HStack {
                     Text("Categories")
                     Spacer()
@@ -121,19 +134,6 @@ struct AddTransactionView: View {
                         }
                     }
                 }
-                ZStack {
-                    DatePicker("Date", selection: $date, displayedComponents: [.date])
-                        .onChange(of: date) { newDate in
-                            manager.selectedMonth = manager.getMonthForDate(date: newDate)
-                            categoryString = "Required"
-                            category = nil
-                        }
-                    if (date.get(.day, .month, .year) == Date().get(.day, .month, .year)) {
-                        Spacer()
-                        Text("Today")
-                        Spacer()
-                    }
-                }
                 VStack {
                     HStack {
                         Text("Notes")
@@ -149,6 +149,15 @@ struct AddTransactionView: View {
                                 .padding(.leading, 5)
                         }
                     }
+                }
+            }
+            .onAppear() {
+                // code for presetting the transaction date to whatever month was selected
+                if (manager.getCurrentMonth().month == manager.selectedMonth.month && manager.getCurrentMonth().year == manager.selectedMonth.year) {
+                    date = Date()
+                }
+                else {
+                    date = manager.getDateForMonth(month: manager.selectedMonth)
                 }
             }
             .toolbar {

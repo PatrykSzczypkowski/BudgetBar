@@ -55,8 +55,14 @@ struct AddCategoryView: View {
     }
 }
 
-//struct AddCategoryView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddCategoryView()
-//    }
-//}
+struct AddCategoryView_Previews: PreviewProvider {
+    static var previews: some View {
+        let persistenceController = PersistenceController.shared
+        let manager = LevelManager()
+        
+        AddCategoryView()
+            .preferredColorScheme(.dark)
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        .environmentObject(manager)
+    }
+}

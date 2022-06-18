@@ -133,11 +133,11 @@
 		5E41345727B2D78D006CE29E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5E7F74A927A44092009B9BB6 /* ContentView.swift */,
+				5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */,
 				5E41345A27B2DFC2006CE29E /* Tabs */,
 				5E41345827B2D9BE006CE29E /* Add */,
 				5E41345927B2D9C6006CE29E /* Edit */,
-				5E7F74A927A44092009B9BB6 /* ContentView.swift */,
-				5E5DAD4C27C7E1230014D3ED /* TransactionsPerAccountView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,11 +208,11 @@
 				5E4FA7AE27DB65A800371354 /* Info.plist */,
 				5E41345727B2D78D006CE29E /* Views */,
 				5E7F74A727A44092009B9BB6 /* LevelApp.swift */,
-				5E7F74AB27A44095009B9BB6 /* Assets.xcassets */,
 				5E7F74B027A44095009B9BB6 /* Persistence.swift */,
+				5EE2B85A27E76EF100F72AD5 /* LevelManager.swift */,
+				5E7F74AB27A44095009B9BB6 /* Assets.xcassets */,
 				5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */,
 				5E7F74AD27A44095009B9BB6 /* Preview Content */,
-				5EE2B85A27E76EF100F72AD5 /* LevelManager.swift */,
 			);
 			path = Level;
 			sourceTree = "<group>";

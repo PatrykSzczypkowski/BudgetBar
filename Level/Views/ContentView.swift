@@ -33,8 +33,13 @@ struct ContentView: View {
     }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView().preferredColorScheme(.dark).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//    }
-//}
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        let manager = LevelManager()
+        
+        ContentView()
+        .preferredColorScheme(.dark)
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+        .environmentObject(manager)
+    }
+}

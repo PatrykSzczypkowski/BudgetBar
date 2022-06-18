@@ -41,7 +41,7 @@ class LevelManager: ObservableObject {
             setMonthForCategories()
         }
     }
-    var monthString = "Feb 2022"
+    private(set) var monthString = "Feb 2022"
     
     init() {
         monthsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Month.year, ascending: true), NSSortDescriptor(keyPath: \Month.month, ascending: true)]
@@ -214,6 +214,14 @@ class LevelManager: ObservableObject {
         return newMonth
     }
     
+    func getDateForMonth(month: Month) -> Date {
+        var components = DateComponents()
+        components.month = Int(month.month)
+        components.year = Int(month.year)
+        
+        return Calendar.current.date(from: components)!
+    }
+    
     func addCategory(name: String, budget: Decimal) {
         let monthIndex = months.firstIndex(of: selectedMonth)
         for index in (monthIndex ?? 0)..<months.count {
@@ -225,21 +233,21 @@ class LevelManager: ObservableObject {
         }
         
         try? context.save()
-        
-        do {
-            try categoriesPerMonth = context.fetch(categoriesRequest)
-        } catch {
-            print(error)
-        }
-        
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
     }
     
     func editCategory(category: Category, name: String, budget: Decimal) {
-        // TODO: edit category for future months
-        category.name = name
-        // update balance by the difference of the changed budget: balance = balance + (newBudget - oldBudget)
-        category.balance =  category.balance!.adding(NSDecimalNumber(decimal: budget).subtracting(category.budget!))
-        category.budget = NSDecimalNumber(decimal: budget)
+        let startIndex = months.firstIndex(of: category.month!)
+        for month in months.dropFirst(startIndex!) {
+            for cat in month.categories!.array as! [Category] {
+                if (cat.name == category.name) {
+                    cat.name = name
+                    // update balance by the difference of the changed budget: balance = balance + (newBudget - oldBudget)
+                    cat.balance = cat.balance!.adding(NSDecimalNumber(decimal: budget).subtracting(cat.budget!))
+                    cat.budget = NSDecimalNumber(decimal: budget)
+                }
+            }
+        }
         
         try? context.save()
         try? categoriesPerMonth = context.fetch(categoriesRequest)
@@ -254,35 +262,21 @@ class LevelManager: ObservableObject {
             revisedItems[reverseIndex].userOrder = Int16(reverseIndex)
         }
         
-        do {
-            try categoriesPerMonth = context.fetch(categoriesRequest)
-        } catch {
-            print(error)
-        }
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
     }
     
     func deleteCategory(offsets: IndexSet) {
         offsets.map { categoriesPerMonth[$0] }.forEach(context.delete)
 
-        do {
-            try context.save()
-            try categoriesPerMonth = context.fetch(categoriesRequest)
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        try? context.save()
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
     }
     
     func setMonthForCategories() {
         monthString = "\(DateFormatter().shortStandaloneMonthSymbols[Int(selectedMonth.month) - 1]) \(selectedMonth.year)"
         categoriesRequest.predicate = NSPredicate(format: "month == %@", selectedMonth)
-        do {
-            try categoriesPerMonth = context.fetch(categoriesRequest)
-        } catch {
-            print(error)
-        }
+        
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
     }
     
     func addAccount(name: String, balance: Decimal) {
@@ -304,16 +298,9 @@ class LevelManager: ObservableObject {
     
     func deleteAccount(offsets: IndexSet) {
         offsets.map { accounts[$0] }.forEach(context.delete)
-
-        do {
-            try context.save()
-            try accounts = context.fetch(accountsRequest)
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        
+        try? context.save()
+        try? accounts = context.fetch(accountsRequest)
     }
     
     func addTransaction(amount: Decimal, inflow: Bool, payee: String, category: Category?, account: Account, date: Date, notes: String) {
@@ -324,20 +311,21 @@ class LevelManager: ObservableObject {
         newTransaction.category = category
         newTransaction.account = account
         newTransaction.date = date
+        newTransaction.month = getMonthForDate(date: date)
         newTransaction.notes = notes
         
-        // TODO: add comment for the complicated looking calculations
         if (category != nil) {
             category!.addToTransactions(newTransaction)
+            // update category balance: categoryBalance = categoryBalance +/- transaction
             category!.balance = category!.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
         }
         account.addToTransactions(newTransaction)
+        // update account balance: accountBalance = accountBalance +/- transaction
         account.balance = account.balance?.adding(NSDecimalNumber(decimal: inflow ? amount : -amount))
         
         if (transactionsPerAccount.first?.account == account) {
             transactionsPerAccount.append(newTransaction)
         }
-        
         
         try? context.save()
         try? transactions = context.fetch(transactionsRequest)
@@ -361,6 +349,7 @@ class LevelManager: ObservableObject {
         transaction.category = category
         transaction.account = account
         transaction.date = date
+        transaction.month = getMonthForDate(date: date)
         transaction.notes = notes
         
         try? context.save()
@@ -368,23 +357,19 @@ class LevelManager: ObservableObject {
     }
     
     func deleteTransaction(offsets: IndexSet) {
-        // TODO: add comment for the complicated looking calculations
         for index in offsets {
+            // update the account balance: account_balance = account_balance +/- transaction
             transactionsPerAccount[index].account!.balance! = transactionsPerAccount[index].account!.balance!.adding( !transactionsPerAccount[index].inflow ? transactionsPerAccount[index].amount! : transactionsPerAccount[index].amount!.multiplying(by: -1))
-            transactionsPerAccount[index].category!.balance! = transactionsPerAccount[index].category!.balance!.adding( !transactionsPerAccount[index].inflow ? transactionsPerAccount[index].amount! : transactionsPerAccount[index].amount!.multiplying(by: -1))
+            if (transactionsPerAccount[index].category != nil) {
+                // update the category balance: categoryBalance = categoryBalance +/- transaction
+                transactionsPerAccount[index].category!.balance! = transactionsPerAccount[index].category!.balance!.adding( !transactionsPerAccount[index].inflow ? transactionsPerAccount[index].amount! : transactionsPerAccount[index].amount!.multiplying(by: -1))
+            }
         }
         offsets.map { transactionsPerAccount[$0] }.forEach(context.delete)
 
-        do {
-            try context.save()
-            try transactions = context.fetch(transactionsRequest)
-            // TODO: transactionsPerAccount should be refreshed in some way
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        try? context.save()
+        try? transactions = context.fetch(transactionsRequest)
+        // transactionPerAccount could be refreshed here if problems occurTOD
     }
     
     func setTransactionsPerAccount(account: Account) {
@@ -396,7 +381,39 @@ class LevelManager: ObservableObject {
             transactionsPerAccount = transactions.filter { $0.account == account }
         }
         // Filtering transactions for search bar in TransactionsPerAccountView (can search for amount, payee and categories)
-        transactionsPerAccount = transactions.filter { $0.account == account && ($0.amount?.stringValue == predicate || $0.payee!.lowercased().hasPrefix(predicate.lowercased()) || $0.category!.name!.lowercased().hasPrefix(predicate.lowercased())) }
+        transactionsPerAccount = transactions.filter { $0.account == account && ($0.amount?.stringValue == predicate || $0.payee!.lowercased().hasPrefix(predicate.lowercased()) || ($0.category != nil ? $0.category!.name!.lowercased().hasPrefix(predicate.lowercased()) : false)) }
+    }
+    
+    func wipeAllData() {
+        let persistentContainer = PersistenceController.shared.container
+        let url: URL = {
+            let url = FileManager.default.urls(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask
+            )[0].appendingPathComponent("\("Level").\("sqlite")")
+            assert(FileManager.default.fileExists(atPath: url.path))
+
+            return url
+        }()
+        // destroy existing store
+        try! persistentContainer.persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: "sqlite", options: nil)
+        
+        // load new store
+        persistentContainer.loadPersistentStores(completionHandler: { nsPersistentStoreDescription, error in
+            guard let error = error else {
+                return
+            }
+            fatalError(error.localizedDescription)
+        })
+        
+        try? months = context.fetch(monthsRequest)
+        initializeMonths()
+        
+        try? accounts = context.fetch(accountsRequest)
+        try? transactions = context.fetch(transactionsRequest)
+        try? categoriesPerMonth = context.fetch(categoriesRequest)
+        
+        setCurrentMonth()
     }
 }
 

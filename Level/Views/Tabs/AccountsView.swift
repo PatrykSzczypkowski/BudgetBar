@@ -16,6 +16,7 @@ struct AccountsView: View {
     var body: some View {
         NavigationView {
             List {
+                // display if there are no accounts added
                 if (manager.accounts.count == 0) {
                     VStack {
                         Spacer()

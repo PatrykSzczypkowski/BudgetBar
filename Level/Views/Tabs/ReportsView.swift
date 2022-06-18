@@ -14,23 +14,55 @@ struct ReportsView: View {
     var body: some View {
         NavigationView {
             List {
-                VStack {
-                    Text("Spending").font(.title2)
-                    LineChart(entries: getSpending().entries, months: getSpending().months, label: "Spending", color: UIColor.red)
-                        .frame(height: 250, alignment: .center)
+                if (showReports()) {
+                    VStack {
+                        Text("Spending").font(.title2)
+                        LineChart(entries: getSpending().entries, months: getSpending().months, label: "Spending", color: UIColor.red)
+                            .frame(height: 250, alignment: .center)
+                    }
+                    VStack {
+                        Text("Income").font(.title2)
+                        LineChart(entries: getIncome().entries, months: getIncome().months, label: "Income", color: UIColor.green)
+                            .frame(height: 250, alignment: .center)
+                    }
                 }
-                VStack {
-                    Text("Income").font(.title2)
-                    LineChart(entries: getIncome().entries, months: getIncome().months, label: "Income", color: UIColor.green)
-                        .frame(height: 250, alignment: .center)
+                // show if there is less than 3 months worth of data available for reports
+                else {
+                    Text("You need at least 3 months of data for the reports to show.")
                 }
-                .navigationTitle("Reports")
             }
+            .navigationTitle("Reports")
             .listStyle(.plain)
         }
         .tabItem {
             Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
         }
+    }
+    
+    // function that checks if there is at least "minimumMonths" worth of data to show reports
+    func showReports() -> Bool {
+        let minimumMonths = 3
+        let indexOfCurrentMonth = manager.months.firstIndex(of: manager.getMonthForDate(date: Date()))
+        
+        var startIndex = 0
+        var counter = 0
+        
+        if (indexOfCurrentMonth != nil) {
+            startIndex = max(indexOfCurrentMonth! - 6, 0)
+        }
+        let relevantMonths = Array(manager.months[startIndex...(indexOfCurrentMonth ?? 0)])
+        
+        if (relevantMonths.count < minimumMonths) { return false }
+                
+        for month in relevantMonths {
+            if (month.transactions!.count > 0) {
+                counter += 1
+            }
+        }
+        
+        if (counter < minimumMonths) { return false }
+        
+        return true
     }
     
     func getSpending() -> (entries: [ChartDataEntry], months: [String]) {
@@ -52,15 +84,11 @@ struct ReportsView: View {
             if (month.categories!.count != 0) {
                 var monthlySpendings: Decimal = 0.0
                 
-                for category in month.categories!.array as! [Category] {
-                    for transaction in category.transactions!.array as! [Transaction] {
-                        if (!transaction.inflow) {
-                            monthlySpendings += transaction.amount!.decimalValue
-                        }
+                for transaction in month.transactions!.allObjects as! [Transaction] {
+                    if (!transaction.inflow) {
+                        monthlySpendings += transaction.amount!.decimalValue
                     }
                 }
-                print("\(month.month).\(month.year): \(monthlySpendings)")
-                //            let x = "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)"
                 entries.append(ChartDataEntry(x: counter, y: (monthlySpendings as NSDecimalNumber).doubleValue))
                 months.append(DateFormatter().shortStandaloneMonthSymbols[Int(month.month) - 1])
                 
@@ -86,18 +114,14 @@ struct ReportsView: View {
         relevantMonths = Array(relevantMonths[startIndex...(indexOfCurrentMonth ?? 0)])
         
         for month in relevantMonths {
-            if (month.categories!.count != 0) {
+            if (month.transactions!.count != 0) {
                 var monthlyIncome: Decimal = 0.0
                 
-                for category in month.categories!.array as! [Category] {
-                    for transaction in category.transactions!.array as! [Transaction] {
-                        if (transaction.inflow) {
-                            monthlyIncome += transaction.amount!.decimalValue
-                        }
+                for transaction in month.transactions!.allObjects as! [Transaction] {
+                    if (transaction.inflow) {
+                        monthlyIncome += transaction.amount!.decimalValue
                     }
                 }
-                print("\(month.month).\(month.year): \(monthlyIncome)")
-                //            let x = "\(DateFormatter().standaloneMonthSymbols[Int(month.month) - 1]) \(month.year)"
                 entries.append(ChartDataEntry(x: counter, y: (monthlyIncome as NSDecimalNumber).doubleValue))
                 months.append(DateFormatter().shortStandaloneMonthSymbols[Int(month.month) - 1])
                 
@@ -120,10 +144,13 @@ struct LineChart: UIViewRepresentable {
         // Y-Axis styling
         chart.leftAxis.axisMinimum = 0
         chart.rightAxis.enabled = false
+        
         // X-Axis styling
         chart.xAxis.axisMinimum = 0
         chart.xAxis.labelPosition = XAxis.LabelPosition.bottom
         chart.xAxis.drawGridLinesEnabled = false
+        chart.xAxis.granularity = 1.0
+        chart.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
         
         chart.doubleTapToZoomEnabled = false
         chart.setScaleEnabled(false)
@@ -131,8 +158,6 @@ struct LineChart: UIViewRepresentable {
         chart.legend.enabled = false
         
         chart.data = addData()
-        chart.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
-        print(months)
         
         return chart
     }
@@ -152,6 +177,7 @@ struct LineChart: UIViewRepresentable {
         dataSet.drawCircleHoleEnabled = false
         dataSet.circleRadius = 2
         dataSet.lineWidth = 2
+        dataSet.setDrawHighlightIndicators(false)
         
         return LineChartData(dataSet: dataSet)
     }
@@ -159,8 +185,14 @@ struct LineChart: UIViewRepresentable {
     typealias UIViewType = LineChartView
 }
 
-//struct ReportsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ReportsView()
-//    }
-//}
+struct ReportsView_Previews: PreviewProvider {
+    static var previews: some View {
+        let persistenceController = PersistenceController.shared
+        let manager = LevelManager()
+        
+        ReportsView()
+        .preferredColorScheme(.dark)
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        .environmentObject(manager)
+    }
+}
