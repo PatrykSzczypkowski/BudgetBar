@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5E7F74A327A44091009B9BB6"
-               BuildableName = "Level.app"
+               BuildableName = "BudgetBar.app"
                BlueprintName = "BudgetBar"
                ReferencedContainer = "container:BudgetBar.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5E7F74B827A44095009B9BB6"
-               BuildableName = "LevelTests.xctest"
+               BuildableName = "BudgetBarTests.xctest"
                BlueprintName = "BudgetBarTests"
                ReferencedContainer = "container:BudgetBar.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5E7F74C227A44095009B9BB6"
-               BuildableName = "LevelUITests.xctest"
+               BuildableName = "BudgetBarUITests.xctest"
                BlueprintName = "BudgetBarUITests"
                ReferencedContainer = "container:BudgetBar.xcodeproj">
             </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5E7F74A327A44091009B9BB6"
-            BuildableName = "Level.app"
+            BuildableName = "BudgetBar.app"
             BlueprintName = "BudgetBar"
             ReferencedContainer = "container:BudgetBar.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5E7F74A327A44091009B9BB6"
-            BuildableName = "Level.app"
+            BuildableName = "BudgetBar.app"
             BlueprintName = "BudgetBar"
             ReferencedContainer = "container:BudgetBar.xcodeproj">
          </BuildableReference>
