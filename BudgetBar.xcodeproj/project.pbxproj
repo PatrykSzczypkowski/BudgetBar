@@ -18,9 +18,9 @@
 		5E7F74AF27A44095009B9BB6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E7F74AE27A44095009B9BB6 /* Preview Assets.xcassets */; };
 		5E7F74B127A44095009B9BB6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74B027A44095009B9BB6 /* Persistence.swift */; };
 		5E7F74B427A44095009B9BB6 /* Level.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74B227A44095009B9BB6 /* Level.xcdatamodeld */; };
-		5E7F74BE27A44095009B9BB6 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74BD27A44095009B9BB6 /* LevelTests.swift */; };
-		5E7F74C827A44095009B9BB6 /* LevelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C727A44095009B9BB6 /* LevelUITests.swift */; };
-		5E7F74CA27A44095009B9BB6 /* LevelUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */; };
+		5E7F74BE27A44095009B9BB6 /* BudgetBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74BD27A44095009B9BB6 /* BudgetBarTests.swift */; };
+		5E7F74C827A44095009B9BB6 /* BudgetBarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C727A44095009B9BB6 /* BudgetBarUITests.swift */; };
+		5E7F74CA27A44095009B9BB6 /* BudgetBarUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74C927A44095009B9BB6 /* BudgetBarUITestsLaunchTests.swift */; };
 		5E9A47D427B291510071F53F /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D327B291500071F53F /* AddCategoryView.swift */; };
 		5E9A47D627B292590071F53F /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D527B292590071F53F /* EditCategoryView.swift */; };
 		5E9A47D827B2968A0071F53F /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D727B2968A0071F53F /* CategoriesView.swift */; };
@@ -91,10 +91,10 @@
 		5E7F74B027A44095009B9BB6 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		5E7F74B327A44095009B9BB6 /* Level.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Level.xcdatamodel; sourceTree = "<group>"; };
 		5E7F74B927A44095009B9BB6 /* BudgetBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BudgetBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E7F74BD27A44095009B9BB6 /* LevelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTests.swift; sourceTree = "<group>"; };
+		5E7F74BD27A44095009B9BB6 /* BudgetBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBarTests.swift; sourceTree = "<group>"; };
 		5E7F74C327A44095009B9BB6 /* BudgetBarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BudgetBarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E7F74C727A44095009B9BB6 /* LevelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITests.swift; sourceTree = "<group>"; };
-		5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5E7F74C727A44095009B9BB6 /* BudgetBarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBarUITests.swift; sourceTree = "<group>"; };
+		5E7F74C927A44095009B9BB6 /* BudgetBarUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBarUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		5E9A47D327B291500071F53F /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
 		5E9A47D527B292590071F53F /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
 		5E9A47D727B2968A0071F53F /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
@@ -184,8 +184,8 @@
 			isa = PBXGroup;
 			children = (
 				5E7F74A627A44092009B9BB6 /* BudgetBar */,
-				5E7F74BC27A44095009B9BB6 /* LevelTests */,
-				5E7F74C627A44095009B9BB6 /* LevelUITests */,
+				5E7F74BC27A44095009B9BB6 /* BudgetBarTests */,
+				5E7F74C627A44095009B9BB6 /* BudgetBarUITests */,
 				5E7F74A527A44092009B9BB6 /* Products */,
 				5E4FA7B827DB660F00371354 /* Frameworks */,
 			);
@@ -225,21 +225,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		5E7F74BC27A44095009B9BB6 /* LevelTests */ = {
+		5E7F74BC27A44095009B9BB6 /* BudgetBarTests */ = {
 			isa = PBXGroup;
 			children = (
-				5E7F74BD27A44095009B9BB6 /* LevelTests.swift */,
+				5E7F74BD27A44095009B9BB6 /* BudgetBarTests.swift */,
 			);
-			path = LevelTests;
+			path = BudgetBarTests;
 			sourceTree = "<group>";
 		};
-		5E7F74C627A44095009B9BB6 /* LevelUITests */ = {
+		5E7F74C627A44095009B9BB6 /* BudgetBarUITests */ = {
 			isa = PBXGroup;
 			children = (
-				5E7F74C727A44095009B9BB6 /* LevelUITests.swift */,
-				5E7F74C927A44095009B9BB6 /* LevelUITestsLaunchTests.swift */,
+				5E7F74C727A44095009B9BB6 /* BudgetBarUITests.swift */,
+				5E7F74C927A44095009B9BB6 /* BudgetBarUITestsLaunchTests.swift */,
 			);
-			path = LevelUITests;
+			path = BudgetBarUITests;
 			sourceTree = "<group>";
 		};
 		5EE2B85227E76E0C00F72AD5 /* Products */ = {
@@ -434,7 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E7F74BE27A44095009B9BB6 /* LevelTests.swift in Sources */,
+				5E7F74BE27A44095009B9BB6 /* BudgetBarTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,8 +442,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E7F74C827A44095009B9BB6 /* LevelUITests.swift in Sources */,
-				5E7F74CA27A44095009B9BB6 /* LevelUITestsLaunchTests.swift in Sources */,
+				5E7F74C827A44095009B9BB6 /* BudgetBarUITests.swift in Sources */,
+				5E7F74CA27A44095009B9BB6 /* BudgetBarUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
