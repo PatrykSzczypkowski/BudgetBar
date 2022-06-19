@@ -26,10 +26,9 @@
 		5E9A47DA27B2BEB40071F53F /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47D927B2BEB40071F53F /* AccountsView.swift */; };
 		5E9A47DC27B2C1320071F53F /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DB27B2C1320071F53F /* EditAccountView.swift */; };
 		5E9A47DE27B2C1BC0071F53F /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */; };
-		5EA4086D285E743300F62390 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EA4086A285E741500F62390 /* Charts.framework */; platformFilter = ios; };
-		5EA4086E285E743300F62390 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5EA4086A285E741500F62390 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5ED03D5D285E773B007A44C1 /* BudgetBar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F74B227A44095009B9BB6 /* BudgetBar.xcdatamodeld */; };
 		5EE2B85B27E76EF100F72AD5 /* BudgetBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B85A27E76EF100F72AD5 /* BudgetBarManager.swift */; };
+		5EFA4337285F4B5D007DE9E5 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 5EFA4336285F4B5D007DE9E5 /* Charts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,20 +46,6 @@
 			remoteGlobalIDString = 5E7F74A327A44091009B9BB6;
 			remoteInfo = Level;
 		};
-		5EA40869285E741500F62390 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EA40864285E741500F62390 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
-			remoteInfo = Charts;
-		};
-		5EA4086B285E741500F62390 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EA40864285E741500F62390 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
-			remoteInfo = ChartsTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,7 +55,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5EA4086E285E743300F62390 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,7 +86,6 @@
 		5E9A47D927B2BEB40071F53F /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		5E9A47DB27B2C1320071F53F /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		5E9A47DD27B2C1BC0071F53F /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
-		5EA40864285E741500F62390 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../../../../../../../Downloads/Charts-4.0.2/Charts.xcodeproj"; sourceTree = "<group>"; };
 		5EE2B85A27E76EF100F72AD5 /* BudgetBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBarManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EA4086D285E743300F62390 /* Charts.framework in Frameworks */,
+				5EFA4337285F4B5D007DE9E5 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +189,6 @@
 		5E7F74A627A44092009B9BB6 /* BudgetBar */ = {
 			isa = PBXGroup;
 			children = (
-				5EA40864285E741500F62390 /* Charts.xcodeproj */,
 				5E4FA7AE27DB65A800371354 /* Info.plist */,
 				5E41345727B2D78D006CE29E /* Views */,
 				5E7F74A727A44092009B9BB6 /* BudgetBarApp.swift */,
@@ -244,15 +226,6 @@
 			path = BudgetBarUITests;
 			sourceTree = "<group>";
 		};
-		5EA40865285E741500F62390 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5EA4086A285E741500F62390 /* Charts.framework */,
-				5EA4086C285E741500F62390 /* ChartsTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -271,6 +244,7 @@
 			);
 			name = BudgetBar;
 			packageProductDependencies = (
+				5EFA4336285F4B5D007DE9E5 /* Charts */,
 			);
 			productName = Level;
 			productReference = 5E7F74A427A44092009B9BB6 /* BudgetBar.app */;
@@ -346,15 +320,10 @@
 			mainGroup = 5E7F749B27A44091009B9BB6;
 			packageReferences = (
 				5EE2B85C27E8B0D500F72AD5 /* XCRemoteSwiftPackageReference "Charts" */,
+				5EFA4335285F4B5D007DE9E5 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 5E7F74A527A44092009B9BB6 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5EA40865285E741500F62390 /* Products */;
-					ProjectRef = 5EA40864285E741500F62390 /* Charts.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				5E7F74A327A44091009B9BB6 /* BudgetBar */,
@@ -363,23 +332,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5EA4086A285E741500F62390 /* Charts.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Charts.framework;
-			remoteRef = 5EA40869285E741500F62390 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5EA4086C285E741500F62390 /* ChartsTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ChartsTests.xctest;
-			remoteRef = 5EA4086B285E741500F62390 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5E7F74A227A44091009B9BB6 /* Resources */ = {
@@ -768,7 +720,23 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		5EFA4335285F4B5D007DE9E5 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5EFA4336285F4B5D007DE9E5 /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5EE2B85C27E8B0D500F72AD5 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5E7F74B227A44095009B9BB6 /* BudgetBar.xcdatamodeld */ = {
